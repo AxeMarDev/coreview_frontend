@@ -1,33 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {BrowserRouter, Route, Routes, useLocation} from "react-router-dom";
+import {useEffect} from "react";
+import Root from "./components/root.tsx";
+import Navbar from "./components/navbar.tsx";
+import Index from "./pages";
+
+
+
+function AppRouter(){
+    const location = useLocation()
+
+    useEffect(() => {
+        console.log(location.pathname)
+    }, []);
+
+    return(
+        <Root classname={"text-white"} >
+            <Navbar />
+            <Routes>
+                <Route path={"/"} element={ <Index/> }/>
+                <Route path={"/login"} element={ <Index/> }/>
+                <Route path={"/coreview"} element={ <Index/> }>
+                    <Route path={""} element={ <Index/> }/>
+                    <Route path={"clients"} element={ <Index/> }/>
+                    <Route path={"projects"} element={ <Index/> }/>
+                    <Route path={"templates"} element={ <Index/> }/>
+                    <Route path={"employees"} element={ <Index/> }/>
+                    <Route path={"settings"} element={ <Index/> }>
+                        <Route path={"theme"} element={ <Index/> }/>
+                        <Route path={"billing"} element={ <Index/> }/>
+                    </Route>
+                </Route>
+            </Routes>
+        </Root>
+    )
+}
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <BrowserRouter>
+          <AppRouter/>
+      </BrowserRouter>
     </>
   )
 }
