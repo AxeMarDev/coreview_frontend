@@ -119,11 +119,14 @@ function SubMenuButton({to,label,icon}:propsSubMenuButton){
 }
 
 export default function Navbar(){
+
+
+
     return(
         <div className={" flex flex-col h-screen p-3"}>
             <div className={" flex flex-col  h-full w-60 "}>
                 <CompanyLabel/>
-                <NavBarButton to={"/coreview/"} label={"Dashboard"} icon={<MdHomeFilled/>} />
+                <NavBarButton to={"/coreview"} label={"Dashboard"} icon={<MdHomeFilled/>} />
                 <NavbarDivider/>
                 <NavBarButton to={"/coreview/clients"} label={"Clients"} icon={<IoPersonCircle/>} />
                 <NavBarButton to={"/coreview/projects"} label={"Projects"} icon={<FaBox/>} />
