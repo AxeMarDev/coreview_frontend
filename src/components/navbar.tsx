@@ -4,13 +4,19 @@ import { MdHomeFilled } from "react-icons/md";
 import { IoPersonCircle } from "react-icons/io5";
 import { FaBox } from "react-icons/fa6";
 import { IoIosPaper } from "react-icons/io";
+import Cookies from "js-cookie";
+
 
 function CompanyLabel(){
+
+    const value:{id:string, company_name:string,jwt:string} = JSON.parse(Cookies.get('id') || ""); // returns 'value' if the cookie exists
+
+
     return(
         <div className={"rounded bg-[#212121]  mb-4 p-3 flex flex-row"}>
             <div className={"rounded-3xl bg-blue-500 w-10 h-10"}></div>
             <div>
-                <p>Company name</p>
+                <p>{value.id}</p>
             </div>
         </div>
     )
@@ -29,7 +35,6 @@ function NavBarButton({to, label, icon}:propsNavBarButton){
     const [active, setActive ] = useState(false)
 
     useEffect(() => {
-        console.log(location.pathname)
         if( location.pathname === to){
             setActive(true)
         } else{
@@ -119,7 +124,6 @@ function SubMenuButton({to,label,icon}:propsSubMenuButton){
 }
 
 export default function Navbar(){
-
 
 
     return(

@@ -28,7 +28,7 @@ function Rows({rowContent, cols}:propsRow ){
 
     const RowTab = ({title}:propsHeaderTab) =>{
         return(
-            <div className={`py-2 pl-2 ${title.width} border-r-2 border-r-stone-900  border-b-2 border-b-stone-900`}>
+            <div className={`flex py-2 pl-2 ${title.width} border-r-2 border-r-stone-900  border-b-2 border-b-stone-900`}>
                 {rowContent[title.name ]}
             </div>
         )
@@ -41,14 +41,22 @@ function Rows({rowContent, cols}:propsRow ){
     )
 }
 
-type propsTable = {cols:{ name: string, width: string }[], content:Record<string, string>[]}
-export default function Table({cols, content}:propsTable ){
+type propsTable<type> = {cols:{ name: string, width: string }[], content: type[]}
+export default function Table<type>({cols, content}:propsTable<type> ){
+
+    const recordContent: Record<string, string>[]  = content.map( (item )=>{
+        return Object.entries(item as object).reduce((acc, [key, value]) => {
+            acc[key] = String(value); // Convert each value to a string
+            return acc;
+        }, {} as Record<string, string>)
+    })
+
 
     return(
         <div className={"w-full h-full bg-[#171717] rounded-t-lg rounded-b-lg flex flex-col"}>
             <Header cols={cols}/>
-            <div className={"flex flex-col bg-stone-800 h-full rounded-b-lg overflow-y-scroll"}>
-                {content.map((item)=> <Rows rowContent={item} cols={cols}/> ) }
+            <div className={"flex flex-col bg-stone-800 h-full w-full rounded-b-lg overflow-y-scroll overflow-x-scroll"}>
+                {recordContent.map((item)=> <Rows rowContent={item} cols={cols}/> ) }
             </div>
         </div>
     )
