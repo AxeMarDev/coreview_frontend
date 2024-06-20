@@ -11,6 +11,8 @@ import Login from "./pages/login.tsx";
 import Cookies from "js-cookie";
 import AddClient from "./pages/addClient.tsx";
 import AddProject from "./pages/addProject.tsx";
+import DeleteClients from "./pages/deleteClients.tsx";
+
 
 
 function AppRouter(){
@@ -58,6 +60,7 @@ function AppRouter(){
                     <Route path={""} element={ <Index/> }/>
                     <Route path={"clients"} element={ <Clients/> }>
                         <Route path={"add"} element={ <AddClient/> }/>
+                        <Route path={"delete"} element={ <DeleteClients/> }/>
                     </Route>
                     <Route path={"projects"} element={ <Projects/> }>
                         <Route path={"add"} element={ <AddProject/> }/>

@@ -14,7 +14,7 @@ export default function AddClient(){
     const clientsMutation = useMutation({
         mutationFn: (newClient:tClient)=>API.addClient( newClient),
         onSuccess: ()=>{
-            QueryClient.invalidateQueries()
+            QueryClient.invalidateQueries({queryKey:["clients"]})
             navigate("/coreview/clients")
         }
     })
@@ -28,7 +28,6 @@ export default function AddClient(){
             <input type={"text"} value={ clientFields.email} placeholder={"email"} onChange={(e)=>setClientFields({...clientFields, email: e.target.value})}/>
             <input type={"text"} value={ clientFields.phone} placeholder={"phone"} onChange={(e)=>setClientFields({...clientFields, phone: e.target.value})}/>
             <input type={"text"} value={ clientFields.hash_password} placeholder={"password"} onChange={(e)=>setClientFields({...clientFields, hash_password: e.target.value})}/>
-
 
             <button onClick={()=>clientsMutation.mutate( clientFields)}>add client</button>
 

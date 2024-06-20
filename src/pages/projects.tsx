@@ -4,6 +4,7 @@ import { useQuery}  from "@tanstack/react-query";
 import API from "../API/api.ts";
 import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useLayoutEffect, useState} from "react";
+import {selectedProjects} from "../assets/ReactQueryStore.ts";
 
 
 export default function Projects(){
@@ -41,7 +42,7 @@ export default function Projects(){
                         {name:"id", width: "w-10"},
                         {name:"name",width: "w-32"},
                         {name:"company_id",width: "w-32"}
-                    ]} content={projectsQuery.data.resp}/>
+                    ]} content={projectsQuery.data.resp} queryKey={"selectedProjects"} selectedArray={selectedProjects}/>
                 )}
 
             </div>
