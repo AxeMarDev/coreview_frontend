@@ -1,7 +1,7 @@
 import Table from "../components/table.tsx";
 import Title from "../components/title.tsx";
 import API, {tClient} from "../API/api.ts";
-import { useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import { useLayoutEffect, useState} from "react";
 import { Outlet, useLocation, useNavigate} from "react-router-dom";
 import {selectedClients} from "../assets/ReactQueryStore.ts";
@@ -37,26 +37,42 @@ function OptionsbarButtonStyle( {title,action}:propsOptionBarStyle){
 function OptionsBar(){
 
     const navigate = useNavigate()
-
+    const QueryClient = useQueryClient()
 
     const selectClientsQuery = useQuery({
         queryKey: ["selectclients"],
         queryFn: () => selectedClients
     })
 
-    return(
-        <div className={"flex flex-row gap-3"}>
-            { selectClientsQuery.data && (
-                <div>
-                    { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
-                    { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"select all"} action={()=>{}}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>{}}/> )}
-                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
-                </div>
-            )}
 
-        </div>
+    const deselectAllMutation = useMutation({
+        mutationFn: () => {
+
+            return new Promise<void>((resolve) => {
+
+                selectedClients.splice(0, selectedClients.length);  //
+                resolve();
+            });
+        },
+        onSuccess: ()=> {
+
+            QueryClient.resetQueries({queryKey:["selectclients"]})
+        },
+    })
+
+    return(
+
+        selectClientsQuery.data && (
+            <div className={"flex flex-row gap-3"}>
+                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
+                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"select all"} action={()=>{}}/> )}
+                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
+                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
+                { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
+            </div>
+        )
+
+
     )
 }
 
@@ -84,6 +100,8 @@ export default function Clients(){
     })
 
 
+
+
     return(
         inOutlet ?(
             <Outlet/>
@@ -99,7 +117,7 @@ export default function Clients(){
                         {name:"company_id", width: "w-32"},
                         {name:"name",width: "w-32"},
                         {name:"email",width: "w-32"}
-                    ]} content={clientsQuery.data.resp } queryKey={"selectclients"} selectedArray={selectedClients}/>
+                    ]} content={clientsQuery.data.resp } queryKey={"selectclients"} selectedArray={ selectedClients }/>
                 )}
 
             </div>

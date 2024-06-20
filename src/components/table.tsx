@@ -1,5 +1,5 @@
-import {useLayoutEffect, useState} from "react";
-import {useQueryClient, useMutation} from "@tanstack/react-query";
+import {useQueryClient, useMutation, useQuery} from "@tanstack/react-query";
+import {selectedClients} from "../assets/ReactQueryStore.ts";
 
 
 
@@ -29,7 +29,6 @@ type propsRow = { rowContent: Record<string, string> , cols: { name: string, wid
 
 function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
 
-    console.log(selectedArray)
     const RowTab = ({title}:propsHeaderTab) =>{
         return(
             <div className={`flex py-2 pl-2 ${title.width} border-r-2 border-r-stone-900  border-b-2 border-b-stone-900`}>
@@ -38,14 +37,11 @@ function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
         )
     }
 
-    const [styleUpdate, setStyleUpdte ] = useState({backgroundColor:""})
-
-
     const QueryClient = useQueryClient()
 
     const selectedClientsMutation = useMutation({
         mutationFn: (clientId: string) => {
-            setStyleUpdte(( (styleUpdate.backgroundColor=== "red") ? ({backgroundColor:""}):({backgroundColor:"red"})))
+
             // Find and toggle the clientId in selectedArray
             return new Promise<void>((resolve) => {
                 const index = selectedArray.indexOf(clientId);
@@ -63,14 +59,15 @@ function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
         },
     })
 
-    useLayoutEffect(() => {
-        if ( selectedArray.includes(rowContent["id"] )){
-            setStyleUpdte( {backgroundColor:"red"})
-        }
-    }, []);
+    const selectClientsQuery = useQuery({
+        queryKey: [queryKey],
+        queryFn: () => selectedClients
+    })
 
     return(
-        <div className={"flex flex-row"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])} style={styleUpdate}>
+        <div className={"flex flex-row"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])} style={
+            {backgroundColor: ((selectClientsQuery.data && selectClientsQuery.data.includes(rowContent["id"]) ? ("red") : ("") ))}
+        }>
             {cols.map((colName) => <RowTab title={colName}/> )}
         </div>
     )
