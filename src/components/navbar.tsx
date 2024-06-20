@@ -13,10 +13,11 @@ function CompanyLabel(){
 
 
     return(
-        <div className={"rounded bg-[#212121]  mb-4 p-3 flex flex-row"}>
-            <div className={"rounded-3xl bg-blue-500 w-10 h-10"}></div>
-            <div>
+        <div className={"rounded bg-[#212121]  mb-1 p-2 flex flex-row"}>
+            <div className={"rounded bg-blue-500 w-10 h-10 mr-2"}></div>
+            <div className={"text-sm"}>
                 <p>{value.id}</p>
+                <p className={"text-white/60"}>{value.company_name}</p>
             </div>
         </div>
     )
@@ -24,7 +25,7 @@ function CompanyLabel(){
 
 function NavbarDivider(){
     return(
-        <div className={"bg-[#212121] h-[2px] w-full my-2"}/>
+        <div className={"bg-[#212121] h-[2px] w-full my-1"}/>
     )
 }
 
@@ -44,7 +45,7 @@ function NavBarButton({to, label, icon}:propsNavBarButton){
 
     return(
         <Link to={to} >
-            <div className={`flex flex-row my-1 p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
+            <div className={`flex text-sm flex-row my-1 p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
                 <div className={"grid content-center mr-3"}>
                     {icon}
                 </div>
@@ -72,7 +73,7 @@ function SubMenu({pathPrefix,label,icon,children}:propsSubmenu){
     return(
         !active ? (
             <Link to={pathPrefix}>
-                <div  className={`flex flex-row  p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
+                <div  className={`flex flex-row text-sm p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
                     <div className={"grid content-center mr-3"}>
                         {icon}
                     </div>
@@ -81,14 +82,14 @@ function SubMenu({pathPrefix,label,icon,children}:propsSubmenu){
             </Link>
         ):(
             <div className={"flex flex-col"}>
-                <div className={`flex flex-row  p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded-t hover:bg-[#212121]`}>
+                <div className={`flex flex-row text-sm p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded-t hover:bg-[#212121]`}>
                     <div className={"grid content-center mr-3"}>
                         {icon}
                     </div>
                     {label}
                 </div>
                 <div className={"h-[2px] bg-[#171717]"}/>
-                <div className={`flex flex-col  p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded-b hover:bg-[#212121]`}>
+                <div className={`flex flex-col space-y-1  p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded-b hover:bg-[#212121]`}>
                     {children}
                 </div>
             </div>
@@ -113,7 +114,7 @@ function SubMenuButton({to,label,icon}:propsSubMenuButton){
 
     return(
         <Link to={to} >
-            <div className={`flex flex-row  p-2 ${ active ? "bg-[#464646] text-white" : "text-[#767676]"} rounded hover:bg-[#464646]`}>
+            <div className={`flex flex-row text-sm p-2 ${ active ? "bg-[#464646] text-white" : "text-[#767676]"} rounded hover:bg-[#464646]`}>
                 <div className={"grid content-center mr-3"}>
                     {icon}
                 </div>
@@ -128,7 +129,7 @@ export default function Navbar(){
 
     return(
         <div className={" flex flex-col h-screen p-3"}>
-            <div className={" flex flex-col  h-full w-60 "}>
+            <div className={" flex flex-col  h-full w-48 "}>
                 <CompanyLabel/>
                 <NavBarButton to={"/coreview"} label={"Dashboard"} icon={<MdHomeFilled/>} />
                 <NavbarDivider/>

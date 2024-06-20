@@ -93,34 +93,36 @@ const POST = async <type> ( route:string, params:Record<string, string>, data:Bo
 
     return value
 }
-//
-// const DELETE = async ( route:string, params:Record<string, string>, data:BodyInit) =>{
-//
-//     let value : { resp : tProjects } = {resp: []}
-//
-//     const queryParams = new URLSearchParams(params)
-//
-//     const url = `http://localhost:8080${route}?${queryParams}`;
-//
-//     await fetch(url, {
-//         method: 'DELETE',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: data
-//     })
-//         .then((response)=> response.json() )
-//         .then((data) => {
-//             console.log(data)
-//             value = { resp: data }
-//         })
-//         .catch((error) => {
-//             console.error(error);
-//         });
-//
-//
-//     return value
-// }
+
+const DELETE = async <type> ( route:string, params:Record<string, string>, data:BodyInit) =>{
+
+    const cookie = JSON.parse( Cookies.get("id") || "")
+    let value : { resp : type } = {resp:<type>[]}
+
+    const queryParams = new URLSearchParams(params)
+
+    const url = `http://localhost:8080${route}?${queryParams}`;
+
+    await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${cookie.jwt}`  // Add this line
+        },
+        body: data
+    })
+        .then((response)=> response.json() )
+        .then((data) => {
+            console.log(data)
+            value = { resp: data }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+    return value
+}
 //
 // const PATCH = async ( route:string, params:Record<string, string>, data:BodyInit) =>{
 //
@@ -200,6 +202,10 @@ const addProjects = async(param:tProject)=>{
     return POST<tProject>("/project",{}, JSON.stringify(param))
 }
 
+const deleteClient = async( param:{id:string}) =>{
+    return DELETE( "/client", param, "")
+}
+
 export {register,getClients, addClient, getProjects}
 
 
@@ -227,4 +233,9 @@ export default class API{
     static addProjects(param:tProject){
         return addProjects(param)
     }
+
+    static deleteClient(param:{id:string}){
+        return deleteClient(param)
+    }
+
 }

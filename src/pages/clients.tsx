@@ -8,14 +8,14 @@ import {selectedClients} from "../assets/ReactQueryStore.ts";
 
 
 
-type propsOptionBarStyle = { title:string, action: ()=>void}
-function OptionsbarButtonStyle( {title,action}:propsOptionBarStyle){
+type propsOptionBarStyle = { title:string, action: ()=>void, optionalStyle?:string}
+export function OptionsbarButtonStyle( {title,action, optionalStyle}:propsOptionBarStyle){
 
 
     const style = useState({backgroundColor:""})
 
     const timout = () =>{
-        style[1]({backgroundColor:"blue"})
+
         setTimeout(() => {
             style[1]({backgroundColor:""})
             setTimeout(() => {
@@ -25,7 +25,7 @@ function OptionsbarButtonStyle( {title,action}:propsOptionBarStyle){
     }
 
     return(
-        <button onClick={()=>timout()} className={"bg-stone-700 p-1 px-3 rounded mb-2 "} style={style[0]}>
+        <button onMouseLeave={()=> style[1]({backgroundColor:""})} onMouseDown={()=> style[1]({backgroundColor:"#F1F1F1"})} onMouseUp={()=>timout()} className={`border border-[#E5E5E5] p-[2px] px-3 rounded text-sm bg-white text-black ${optionalStyle}`} style={style[0]}>
             {title}
         </button>
 
@@ -33,8 +33,7 @@ function OptionsbarButtonStyle( {title,action}:propsOptionBarStyle){
 }
 
 
-
-function OptionsBar(){
+export function OptionsBar(){
 
     const navigate = useNavigate()
     const QueryClient = useQueryClient()
@@ -83,12 +82,12 @@ function OptionsBar(){
     return(
 
         selectClientsQuery.data && (
-            <div className={"flex flex-row gap-3"}>
-                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
-                { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
-                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
-                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
-                { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
+            <div className={" flex flex-row content-center py-1 gap-1 rounded "}>
+                    { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
+                    { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
+                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
+                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
+                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
             </div>
         )
     )
@@ -122,7 +121,7 @@ export default function Clients(){
             <Outlet/>
         ):(
             <div className={"w-full h-full flex flex-col "}>
-                <Title> Clients </Title>
+                <Title > Clients </Title>
 
                 <OptionsBar/>
 

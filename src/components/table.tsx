@@ -1,4 +1,5 @@
 import {useQueryClient, useMutation, useQuery} from "@tanstack/react-query";
+import {useState} from "react";
 
 
 
@@ -8,14 +9,14 @@ function Header({cols}:propsHeader){
 
     const HeaderTab = ({title}:propsHeaderTab) =>{
         return(
-            <div className={`py-2 pl-2 ${title.width} border-r-2 border-stone-800`}>
+            <div className={`py-1 pl-2 ${title.width} `}>
                 {title.name}
             </div>
         )
     }
 
     return(
-        <div className={"flex flex-row rounded-t-lg border-b-2 border-stone-800 "}>
+        <div className={"flex flex-row rounded-t-lg border-b border-[#E3E3E3] text-[#616161] text-sm"}>
             {cols.map((column)=>
                 <HeaderTab title={column}/>
             )}
@@ -28,9 +29,11 @@ type propsRow = { rowContent: Record<string, string> , cols: { name: string, wid
 
 function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
 
+
+    const hoverBackground = useState("")
     const RowTab = ({title}:propsHeaderTab) =>{
         return(
-            <div className={`flex py-2 pl-2 ${title.width} border-r-2 border-r-stone-900  border-b-2 border-b-stone-900`}>
+            <div className={`flex py-1 pl-2 ${title.width} border-r border-r-[#E3E3E3] text-[#303030] text-sm `}>
                 {rowContent[title.name ]}
             </div>
         )
@@ -64,8 +67,8 @@ function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
     })
 
     return(
-        <div className={"flex flex-row"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])} style={
-            {backgroundColor: ((selectClientsQuery.data && selectClientsQuery.data.includes(rowContent["id"]) ? ("red") : ("") ))}
+        <div onMouseOver={()=>hoverBackground[1]("#F7F7F7")} onMouseLeave={()=>hoverBackground[1]("")} className={"flex flex-row bg-white border-b border-b-[#E3E3E3]"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])} style={
+            {backgroundColor: ((selectClientsQuery.data && selectClientsQuery.data.includes(rowContent["id"]) ? ("#F1F1F1") : (hoverBackground[0]) ))}
         }>
             {cols.map((colName) => <RowTab title={colName}/> )}
         </div>
@@ -87,9 +90,9 @@ export default function Table<type>({cols, content, queryKey,selectedArray}:prop
 
 
     return(
-        <div className={"w-full h-full bg-[#171717] rounded-t-lg rounded-b-lg flex flex-col"}>
+        <div className={"w-full h-full  rounded-t-lg rounded-b-lg flex flex-col border border-[#E5E5E5]"}>
             <Header cols={cols}/>
-            <div className={"flex flex-col bg-stone-800 h-full w-full rounded-b-lg overflow-y-scroll overflow-x-scroll"}>
+            <div className={"flex flex-col bg-white h-full w-full rounded-b-lg overflow-y-scroll overflow-x-scroll"}>
                 {recordContent.map((item)=> <Rows rowContent={item} cols={cols} queryKey={queryKey} selectedArray={selectedArray}/> ) }
             </div>
         </div>

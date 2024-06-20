@@ -2,7 +2,7 @@ import Title from "../components/title.tsx";
 import Table from "../components/table.tsx";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import API, { tProject} from "../API/api.ts";
-import {Link, Outlet, useLocation, useNavigate} from "react-router-dom";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useLayoutEffect, useState} from "react";
 import { selectedProjects} from "../assets/ReactQueryStore.ts";
 
@@ -81,9 +81,9 @@ function OptionsBar(){
 
         selectClientsQuery.data && (
             <div className={"flex flex-row gap-3"}>
-                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
+                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/projects/add")}/>)}
                 { selectClientsQuery.data.length !== projectsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(projectsQuery.data && projectsQuery.data.resp || [])}/> )}
-                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
+                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/projects/add")}/> )}
                 { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
                 { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
             </div>
@@ -121,7 +121,6 @@ export default function Projects(){
             <div className={"w-full h-full flex flex-col"}>
                 <Title> Projects </Title>
 
-                <Link to={"/coreview/projects/add"}>add</Link>
                 <OptionsBar/>
 
                 { projectsQuery.data && (
