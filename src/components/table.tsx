@@ -1,5 +1,4 @@
 import {useQueryClient, useMutation, useQuery} from "@tanstack/react-query";
-import {selectedClients} from "../assets/ReactQueryStore.ts";
 
 
 
@@ -61,7 +60,7 @@ function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
 
     const selectClientsQuery = useQuery({
         queryKey: [queryKey],
-        queryFn: () => selectedClients
+        queryFn: () => selectedArray
     })
 
     return(

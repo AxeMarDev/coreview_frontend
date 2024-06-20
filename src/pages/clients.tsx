@@ -44,6 +44,11 @@ function OptionsBar(){
         queryFn: () => selectedClients
     })
 
+    const clientsQuery = useQuery({
+        queryKey: ["clients"],
+        queryFn: API.getClients
+    })
+
 
     const deselectAllMutation = useMutation({
         mutationFn: () => {
@@ -55,7 +60,22 @@ function OptionsBar(){
             });
         },
         onSuccess: ()=> {
+            QueryClient.resetQueries({queryKey:["selectclients"]})
+        },
+    })
 
+    const selectAllMutation = useMutation({
+        mutationFn: (clients:tClient[]) => {
+
+            return new Promise<void>((resolve) => {
+
+                selectedClients.splice(0, selectedClients.length);
+                clients.map( item => selectedClients.push( item.id) )
+
+                resolve();
+            });
+        },
+        onSuccess: ()=> {
             QueryClient.resetQueries({queryKey:["selectclients"]})
         },
     })
@@ -65,14 +85,12 @@ function OptionsBar(){
         selectClientsQuery.data && (
             <div className={"flex flex-row gap-3"}>
                 { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
-                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"select all"} action={()=>{}}/> )}
+                { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
                 { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
                 { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
                 { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
             </div>
         )
-
-
     )
 }
 
@@ -98,9 +116,6 @@ export default function Clients(){
         queryKey: ["clients"],
         queryFn: API.getClients
     })
-
-
-
 
     return(
         inOutlet ?(
