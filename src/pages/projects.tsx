@@ -5,30 +5,9 @@ import API, { tProject} from "../API/api.ts";
 import {Outlet, useLocation, useNavigate} from "react-router-dom";
 import {useLayoutEffect, useState} from "react";
 import { selectedProjects} from "../assets/ReactQueryStore.ts";
-
-type propsOptionBarStyle = { title:string, action: ()=>void}
-function OptionsbarButtonStyle( {title,action}:propsOptionBarStyle){
+import {OptionsbarButtonStyle} from "./clients.tsx";
 
 
-    const style = useState({backgroundColor:""})
-
-    const timout = () =>{
-        style[1]({backgroundColor:"blue"})
-        setTimeout(() => {
-            style[1]({backgroundColor:""})
-            setTimeout(() => {
-                action()
-            }, 50); // 1000 milliseconds equals 1 second
-        }, 60); // 1000 milliseconds equals 1 second
-    }
-
-    return(
-        <button onClick={()=>timout()} className={"bg-stone-700 p-1 px-3 rounded mb-2 "} style={style[0]}>
-            {title}
-        </button>
-
-    )
-}
 
 
 function OptionsBar(){
@@ -80,7 +59,7 @@ function OptionsBar(){
     return(
 
         selectClientsQuery.data && (
-            <div className={"flex flex-row gap-3"}>
+            <div className={"flex flex-row content-center py-1 gap-1 rounded"}>
                 { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/projects/add")}/>)}
                 { selectClientsQuery.data.length !== projectsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(projectsQuery.data && projectsQuery.data.resp || [])}/> )}
                 { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/projects/add")}/> )}

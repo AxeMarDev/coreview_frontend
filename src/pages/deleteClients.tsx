@@ -3,6 +3,7 @@ import {useQueryClient, useMutation, useQuery} from "@tanstack/react-query";
 import API from "../API/api.ts";
 import {selectedClients} from "../assets/ReactQueryStore.ts";
 import Title from "../components/title.tsx";
+import {OptionsbarButtonStyle} from "./clients.tsx";
 
 export default function DeleteClients(){
 
@@ -55,18 +56,31 @@ export default function DeleteClients(){
 
 
     return(
-        <div>
+
+        <div className={"flex flex-col w-full"}>
             <Title > Clients/delete </Title>
-            <button onClick={()=> navigate("/coreview/clients") }>back</button>
-            <div>
-                <p> are you sure you want to delete the following, this action is not reversable</p>
-                { clientsQuery.data && clientsQuery.data.resp.map(item=>{
-                    if(selectClientsQuery.data&& selectClientsQuery.data.includes(item.id)  ){
-                        return <p> id: {item.id}, name: {item.name}</p>
-                    }
-                })}
+            <div className={"flex h-full justify-center "}>
+                <div className={" grid content-center w-80 h-full"}>
+                    <div className={"flex flex-col border -mt-32 rounded bg-white p-4 w-80 text-black"}>
+                        <div className={" flex flex-row content-center py-1 gap-1 rounded mb-1"}>
+                            <OptionsbarButtonStyle action={()=> navigate("/coreview/clients")} title={"back"}/>
+                        </div>
+                        <div>
+                            { clientsQuery.data && clientsQuery.data.resp.map(item=>{
+                                if(selectClientsQuery.data&& selectClientsQuery.data.includes(item.id)  ){
+                                    return <p> id: {item.id}, name: {item.name}</p>
+                                }
+                            })}
+                        </div>
+                        <OptionsbarButtonStyle optionalStyle={"mt-2  "} action={()=>handleDelete()} title={"delete all"}/>
+                    </div>
+                    <div className={" flex-wrap text-center text-black/50 text-xs p-1"}>
+                        <p className={"text-wrap"}> This action is not reversable</p>
+                    </div>
+                </div>
             </div>
-            <button onClick={()=>handleDelete()}> delete</button>
         </div>
+
+
     )
 }

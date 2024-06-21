@@ -1,10 +1,10 @@
 import Table from "../components/table.tsx";
 import Title from "../components/title.tsx";
-import API, {tClient} from "../API/api.ts";
+import API, { tEmployee} from "../API/api.ts";
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import { useLayoutEffect, useState} from "react";
 import { Outlet, useLocation, useNavigate} from "react-router-dom";
-import {selectedClients} from "../assets/ReactQueryStore.ts";
+import { selectedEmployees} from "../assets/ReactQueryStore.ts";
 
 
 
@@ -38,14 +38,14 @@ export function OptionsBar(){
     const navigate = useNavigate()
     const QueryClient = useQueryClient()
 
-    const selectClientsQuery = useQuery({
-        queryKey: ["selectclients"],
-        queryFn: () => selectedClients
+    const selectEmployeeQuery = useQuery({
+        queryKey: ["selectEmployees"],
+        queryFn: () => selectedEmployees
     })
 
-    const clientsQuery = useQuery({
-        queryKey: ["clients"],
-        queryFn: API.getClients
+    const employeeQuery = useQuery({
+        queryKey: ["employees"],
+        queryFn: API.getEmployees
     })
 
 
@@ -54,47 +54,47 @@ export function OptionsBar(){
 
             return new Promise<void>((resolve) => {
 
-                selectedClients.splice(0, selectedClients.length);  //
+                selectedEmployees.splice(0, selectedEmployees.length);  //
                 resolve();
             });
         },
         onSuccess: ()=> {
-            QueryClient.resetQueries({queryKey:["selectclients"]})
+            QueryClient.resetQueries({queryKey:["selectEmployees"]})
         },
     })
 
     const selectAllMutation = useMutation({
-        mutationFn: (clients:tClient[]) => {
+        mutationFn: (employees:tEmployee[]) => {
 
             return new Promise<void>((resolve) => {
 
-                selectedClients.splice(0, selectedClients.length);
-                clients.map( item => selectedClients.push( item.id) )
+                selectedEmployees.splice(0, selectedEmployees.length);
+                employees.map( item => selectedEmployees.push( item.id) )
 
                 resolve();
             });
         },
         onSuccess: ()=> {
-            QueryClient.resetQueries({queryKey:["selectclients"]})
+            QueryClient.resetQueries({queryKey:["selectEmployees"]})
         },
     })
 
     return(
 
-        selectClientsQuery.data && (
+        selectEmployeeQuery.data && (
             <div className={" flex flex-row content-center py-1 gap-1 rounded "}>
-                    { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
-                    { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
-                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
+                { selectEmployeeQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/employees/add")}/>)}
+                { selectEmployeeQuery.data.length !== employeeQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(employeeQuery.data && employeeQuery.data.resp || [])}/> )}
+                { selectEmployeeQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/employees/delete")}/> )}
+                { selectEmployeeQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
+                { selectEmployeeQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
             </div>
         )
     )
 }
 
 
-export default function Clients(){
+export default function Employees(){
 
 
     const location = useLocation()
@@ -103,7 +103,7 @@ export default function Clients(){
 
 
     useLayoutEffect(() => {
-        if ( location.pathname !== "/coreview/clients"){
+        if ( location.pathname !== "/coreview/employees"){
             setInOutlet(true)
         } else{
             setInOutlet(false)
@@ -111,9 +111,9 @@ export default function Clients(){
     }, [location,navigate]);
 
 
-    const clientsQuery = useQuery({
-        queryKey: ["clients"],
-        queryFn: API.getClients
+    const employeeQuery = useQuery({
+        queryKey: ["employees"],
+        queryFn: API.getEmployees
     })
 
     return(
@@ -121,17 +121,15 @@ export default function Clients(){
             <Outlet/>
         ):(
             <div className={"w-full h-full flex flex-col "}>
-                <Title > Clients </Title>
+                <Title > Employees </Title>
 
                 <OptionsBar/>
 
-                { clientsQuery.data && (
-                    <Table<tClient> cols={[
+                { employeeQuery.data && (
+                    <Table<tEmployee> cols={[
                         {name:"id", width: "w-10"},
-                        {name:"company_id", width: "w-32"},
                         {name:"name",width: "w-32"},
-                        {name:"email",width: "w-56"}
-                    ]} content={clientsQuery.data.resp } queryKey={"selectclients"} selectedArray={ selectedClients }/>
+                    ]} content={employeeQuery.data.resp } queryKey={"selectEmployees"} selectedArray={ selectedEmployees }/>
                 )}
 
             </div>

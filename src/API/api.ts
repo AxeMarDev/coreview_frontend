@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 export type tMessage = {id:string, email:string, name:string, location:string, message:string,read:boolean, company_id:string}
 export type tMessages = [tMessage] | []
 export type tCompany = {id:string, company_name:string}
-export type tEmployee = {id:string, company_id:string,first_name:string, last_name:string, email:string, is_master:boolean }
 
 
 const GET = async <type>( route:string, params:Record<string, string> ) =>{
@@ -176,6 +175,8 @@ export type tRegister = { company_name:string, company_code:string, email:string
 export type tLogin = {  company_code:string,  username:string, password:string}
 export type tClient = { id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
 export type tProject ={ id:string, name:string , company_id:number}
+export type tEmployee = {id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
+
 
 const  register = async (param:tRegister) =>{
     console.log(JSON.stringify(param))
@@ -204,6 +205,10 @@ const addProjects = async(param:tProject)=>{
 
 const deleteClient = async( param:{id:string}) =>{
     return DELETE( "/client", param, "")
+}
+
+const getEmployees = async() =>{
+    return GET<tEmployee[]>( "/employees", {} )
 }
 
 export {register,getClients, addClient, getProjects}
@@ -236,6 +241,10 @@ export default class API{
 
     static deleteClient(param:{id:string}){
         return deleteClient(param)
+    }
+
+    static getEmployees(){
+        return getEmployees()
     }
 
 }
