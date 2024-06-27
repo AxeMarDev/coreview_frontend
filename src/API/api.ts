@@ -9,6 +9,7 @@ export type tCompany = {id:string, company_name:string}
 
 const GET = async <type>( route:string, params:Record<string, string> ) =>{
 
+
     let value : { resp : type } = {resp: <type>[]}
 
     const cookie = JSON.parse( Cookies.get("id") || "")
@@ -16,7 +17,7 @@ const GET = async <type>( route:string, params:Record<string, string> ) =>{
     const queryParams = new URLSearchParams(params);
 
     const url = `http://localhost:8080${route}?${queryParams}`;
-
+    console.log(cookie.jwt)
     await fetch(url, {
         method: 'GET',
         headers: {
@@ -211,6 +212,10 @@ const getEmployees = async() =>{
     return GET<tEmployee[]>( "/employees", {} )
 }
 
+const addEmployee = async(param:tEmployee)=>{
+    return POST<tEmployee>("/employees",{}, JSON.stringify(param))
+}
+
 export {register,getClients, addClient, getProjects}
 
 
@@ -245,6 +250,9 @@ export default class API{
 
     static getEmployees(){
         return getEmployees()
+    }
+    static addEmployee(param:tEmployee){
+        return addEmployee(param)
     }
 
 }

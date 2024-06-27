@@ -34,6 +34,15 @@ function NavBarButton({to, label, icon}:propsNavBarButton){
 
     const location = useLocation()
     const [active, setActive ] = useState(false)
+    const style = useState({backgroundColor:""})
+
+    const timout = () =>{
+
+        setTimeout(() => {
+            style[1]({backgroundColor:""})
+
+        }, 60); // 1000 milliseconds equals 1 second
+    }
 
     useEffect(() => {
         if( location.pathname === to){
@@ -45,7 +54,7 @@ function NavBarButton({to, label, icon}:propsNavBarButton){
 
     return(
         <Link to={to} >
-            <div className={`flex text-sm flex-row my-1 p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
+            <div onMouseUp={()=>timout()} onMouseDown={()=> style[1]({backgroundColor:"#2f2f2f"})} onMouseLeave={()=> style[1]({backgroundColor:""})} style={style[0]} className={`flex text-sm flex-row my-1 p-2 ${ active ? "bg-[#212121] text-white" : "text-[#767676]"} rounded hover:bg-[#212121]`}>
                 <div className={"grid content-center mr-3"}>
                     {icon}
                 </div>

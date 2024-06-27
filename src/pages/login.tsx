@@ -103,8 +103,6 @@ function ContractorLogin({activeRoute,setRouterState}:propsSignup){
         password: "",
     })
 
-
-
     const handleRegister = () =>{
         API.login(registerFields).then( (resp)=>{
                 console.log(resp.resp)

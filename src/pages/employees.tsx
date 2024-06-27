@@ -129,6 +129,9 @@ export default function Employees(){
                     <Table<tEmployee> cols={[
                         {name:"id", width: "w-10"},
                         {name:"name",width: "w-32"},
+                        {name:"username",width: "w-32"},
+                        {name:"email",width: "w-32"},
+                        {name:"phone",width: "w-32"},
                     ]} content={employeeQuery.data.resp } queryKey={"selectEmployees"} selectedArray={ selectedEmployees }/>
                 )}
 
