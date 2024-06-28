@@ -46,9 +46,9 @@ const GET = async <type>( route:string, params:Record<string, string> ) =>{
     return value
 }
 
-const POST = async <type> ( route:string, params:Record<string, string>, data:BodyInit ) =>{
+const POST = async <type> ( route:string, params:Record<string, string>, data:BodyInit, defaultReturn?:type ) =>{
 
-    let value : { resp : type } = {resp: <type> []}
+    let value : { resp : type } = {resp: defaultReturn || <type>[]}
 
     const queryParams = new URLSearchParams(params);
     const cookie = JSON.parse( Cookies.get("id") || "{}")
@@ -79,15 +79,16 @@ const POST = async <type> ( route:string, params:Record<string, string>, data:Bo
             console.log(data)
             console.log(data.error)
             if ( data.error){
-                value = { resp: <type>[] }
+                value = { resp: defaultReturn || <type>[]}
             } else{
+                data.error = false
                 value = { resp: data }
             }
 
         })
         .catch((error) => {
             console.error(error);
-            value = { resp: <type>[] }
+            value = { resp: defaultReturn || <type>[]}
         });
 
 
@@ -181,11 +182,11 @@ export type tEmployee = {id:string, name:string, username:string, email:string, 
 
 const  register = async (param:tRegister) =>{
     console.log(JSON.stringify(param))
-    return POST<{id:string, company_name:string, jwt:string}>( "/register",{}, JSON.stringify(param))
+    return POST<{id:string, company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true} )
 }
 
 const  login = async (param:tLogin) =>{
-    return POST<{id:string, company_name:string, jwt:string}>( "/auth",{}, JSON.stringify(param))
+    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
 }
 
 const getClients = async()=>{
@@ -193,7 +194,7 @@ const getClients = async()=>{
 }
 
 const addClient = async(param:tClient)=>{
-    return POST<tClient>("/client",{}, JSON.stringify(param))
+    return POST<tClient>("/client",{}, JSON.stringify(param), )
 }
 
 const getProjects = async()=>{

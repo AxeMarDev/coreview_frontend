@@ -14,6 +14,7 @@ import AddProject from "./pages/addProject.tsx";
 import DeleteClients from "./pages/deleteClients.tsx";
 import Employees from "./pages/employees.tsx";
 import AddEmployee from "./pages/addEmployee.tsx";
+import Project from "./pages/project.tsx";
 
 
 
@@ -25,7 +26,7 @@ function AppRouter(){
 
     useLayoutEffect(() => {
         console.log(location.pathname)
-        if ( location.pathname === "/" || location.pathname ==="/login"){
+        if ( location.pathname === "/" || location.pathname ==="/login" || location.pathname ==="/coreview/projects/open" ){
             setDisabledNav(true)
         } else{
             setDisabledNav(false)
@@ -37,10 +38,11 @@ function AppRouter(){
         const value = Cookies.get('id'); // returns 'value' if the cookie exists
         console.log(value)
         if ( (value !== undefined) || ( location.pathname === "/" || location.pathname ==="/login" ) ){
-            // setId( JSON.parse(value) )
+
             navigate(location.pathname)
             setLoading(false)
         } else {
+            console.log( "ghere")
             navigate("/login")
             setLoading(false)
         }
@@ -66,6 +68,7 @@ function AppRouter(){
                     </Route>
                     <Route path={"projects"} element={ <Projects/> }>
                         <Route path={"add"} element={ <AddProject/> }/>
+                        <Route path={"open"} element={ <Project/> }/>
                     </Route>
                     <Route path={"templates"} element={ <Index/> }/>
 

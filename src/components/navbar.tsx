@@ -9,7 +9,7 @@ import Cookies from "js-cookie";
 
 function CompanyLabel(){
 
-    const value:{id:string, company_name:string,jwt:string} = JSON.parse(Cookies.get('id') || ""); // returns 'value' if the cookie exists
+    const value:{id:string, company_name:string,jwt:string} = JSON.parse(Cookies.get('id') || "{}"); // returns 'value' if the cookie exists
 
 
     return(
