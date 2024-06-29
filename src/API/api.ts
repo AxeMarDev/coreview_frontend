@@ -185,8 +185,12 @@ const  register = async (param:tRegister) =>{
     return POST<{id:string, company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true} )
 }
 
-const  login = async (param:tLogin) =>{
-    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
+
+const  clientlogin = async (param:tLogin) =>{
+    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/client-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
+}
+const  employeelogin = async (param:tLogin) =>{
+    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/employee-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
 }
 
 const getClients = async()=>{
@@ -226,9 +230,14 @@ export default class API{
         return register( param )
     }
 
-    static login(param:tLogin){
-        return login(param)
+    static employeelogin(param:tLogin){
+        return employeelogin(param)
     }
+
+    static clientlogin(param:tLogin){
+        return clientlogin(param)
+    }
+
 
     static getClients(){
         return getClients()

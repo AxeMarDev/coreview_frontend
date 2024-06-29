@@ -15,6 +15,7 @@ import DeleteClients from "./pages/deleteClients.tsx";
 import Employees from "./pages/employees.tsx";
 import AddEmployee from "./pages/addEmployee.tsx";
 import Project from "./pages/project.tsx";
+import ClientView from "./pages/clientView.tsx";
 
 
 
@@ -26,7 +27,11 @@ function AppRouter(){
 
     useLayoutEffect(() => {
         console.log(location.pathname)
-        if ( location.pathname === "/" || location.pathname ==="/login" || location.pathname ==="/coreview/projects/open" ){
+        if ( location.pathname === "/" ||
+            location.pathname ==="/login" ||
+            location.pathname ==="/coreview/projects/open"||
+            location.pathname ==="/coreview/c")
+        {
             setDisabledNav(true)
         } else{
             setDisabledNav(false)
@@ -61,6 +66,7 @@ function AppRouter(){
                 <Route path={"/product"} element={ <Home/> }/>
                 <Route path={"/login"} element={ <Login/> }/>
                 <Route path={"/coreview"} element={ <Index/> }>
+                    <Route path={"c"} element={<ClientView/>}/>
                     <Route path={""} element={ <Index/> }/>
                     <Route path={"clients"} element={ <Clients/> }>
                         <Route path={"add"} element={ <AddClient/> }/>

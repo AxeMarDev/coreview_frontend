@@ -43,12 +43,13 @@ function ClientLogin({activeRoute,setRouterState, setRouterState2}:propsLoginBox
     })
 
     const handleRegister = () =>{
-        API.login(registerFields).then( (resp)=>{
+
+        API.clientlogin(registerFields).then( (resp)=>{
                 console.log(resp.resp)
 
                 if ( !resp.resp.error ){
                     Cookies.set('id', JSON.stringify({id: resp.resp.id, company_name: resp.resp.company_name, jwt: resp.resp.jwt}), { expires: 7, path: '' });
-                    navigate("/coreview")
+                    navigate("/coreview/c")
                 } else{
                     console.log("undefined")
                 }
@@ -56,6 +57,7 @@ function ClientLogin({activeRoute,setRouterState, setRouterState2}:propsLoginBox
 
             }
         )
+
     }
     return(
         <div className={"rounded bg-white border  text-white px-10 pt-10 pb-5 flex flex-col text-center"}>
@@ -120,7 +122,7 @@ function ContractorSignup({activeRoute,setRouterState, setRouterState2}:propsSig
             <LoginField2 registerField={registerFields.phone} setRegisterFields={(e)=>setRegisterFields({...registerFields, phone:e.target.value})} placeholder={"phone"} />
             <LoginField2 registerField={registerFields.password} setRegisterFields={(e)=>setRegisterFields({...registerFields, password:e.target.value})} placeholder={"password"} />
 
-            <button className={"bg-black text-sm rounded p-3 mt-10"}onClick={()=>handleRegister()}> Submit</button>
+            <button className={"bg-black text-sm rounded p-3 mt-10"}onClick={()=>handleRegister()}> Continue</button>
             <button onClick={()=>setRouterState2("login")} className={"text-sm text-black mt-4"}> login instead </button>
         </div>
     )
@@ -138,7 +140,7 @@ function ContractorLogin({activeRoute,setRouterState, setRouterState2}:propsSign
     })
 
     const handleRegister = () =>{
-        API.login(registerFields).then( (resp)=>{
+        API.employeelogin(registerFields).then( (resp)=>{
                 console.log(resp.resp)
 
                 if ( !resp.resp.error ){
