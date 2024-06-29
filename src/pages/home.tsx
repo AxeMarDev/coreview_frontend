@@ -1,11 +1,19 @@
 import {Link} from "react-router-dom";
 import railiamntLogo from "../assets/railiantlogowh.png"
-import coreviewbookcover from "../assets/coreviewbookcover.png"
+import { MeshGradientRenderer } from '@johnn-e/react-mesh-gradient';
+import { FaArrowDown } from "react-icons/fa";
 
 function Navbar(){
     return(
-        <div className={"w-screen h-14 bg-[#171717] pl-10 border-b-2 border-b-stone-800 p-3 fixed"}>
-            <img src={railiamntLogo} alt={"railiant logotype"} className={"h-full"}/>
+        <div className={"w-screen  grid content-center mt-3 p-2 px-32"}>
+            <div className={"flex flex-row justify-between "}>
+                <img src={railiamntLogo} alt={"railiant logotype"} className={"p-2 h-10"}/>
+                <div className={"flex flex-row "}>
+                    <Link to={"/about"} className={"text-white h-full p-2 grid content-center px-4 rounded"}>about</Link>
+
+                    <Link to={"/coreview"} className={"bg-white text-black h-full p-2 grid content-center px-4 rounded"}>login</Link>
+                </div>
+            </div>
         </div>
     )
 }
@@ -16,18 +24,29 @@ export default function Home(){
         <div className={"w-screen h-full flex flex-col"}>
             <Navbar/>
             <div className={"h-full flex  flex-row p-20"}>
-                <img className={"h-auto"} src={coreviewbookcover} alt={"book cover for coreview"}/>
-                <div className={"flex flex-col justify-between w-full px-14"}>
-                    <div>
-                        <p className={"text-9xl"}>COREVIEW</p>
-                        <p>Show your clients the work they love. Coreview is a platform built to
-                            strengthen relations with clients by creating a tangile connection to a clients investment. Coreview can be used by clients to see the
-                            progress of their service such as the construction of a new home or
-                            the development of software. What ever the service is, core view can
-                            be the portal that brings your client along for the development </p>
+                <MeshGradientRenderer
+                    id="gradient-container"
+                    className="gradient"
+                    colors={[
+                        "#707067",
+                        "#606055",
+                        "#606055",
+                        "#606055",
+                        "#606055"
+                    ]}
+                />
+
+                <div className={"flex flex-col grid content-center justify-center w-full px-14 "}>
+                    <div className={"flex justify-center text-center   mb-28 flex-col"}>
+                        <p className={"text-5xl font-black"}> Dont let you clients be left in the dark </p>
+                        <div className={" flex justify-center mt-12  h-12"}>
+                            <FaArrowDown className={"h-10 w-10"} />
+                        </div>
+
                     </div>
 
-                    <Link to={"/coreview"} > go to console</Link>
+
+                    {/*<img src={consoless} className={"rounded shadow-lg"}/>*/}
                 </div>
 
             </div>
