@@ -16,6 +16,10 @@ import Employees from "./pages/employees.tsx";
 import AddEmployee from "./pages/addEmployee.tsx";
 import Project from "./pages/project.tsx";
 import ClientView from "./pages/clientView.tsx";
+import Pricing from "./pages/pricing.tsx";
+import Docs from "./pages/docs.tsx";
+import Product from "./pages/product.tsx";
+import About from "./pages/about.tsx";
 
 
 
@@ -27,8 +31,13 @@ function AppRouter(){
 
     useLayoutEffect(() => {
         console.log(location.pathname)
+
         if ( location.pathname === "/" ||
-            location.pathname ==="/login" ||
+            location.pathname ==="/login"
+            || location.pathname ==="/about"
+            || location.pathname ==="/pricing"
+            || location.pathname ==="/docs"
+            || location.pathname ==="/product" ||
             location.pathname ==="/coreview/projects/open"||
             location.pathname ==="/coreview/c")
         {
@@ -41,13 +50,11 @@ function AppRouter(){
 
     useEffect(() => {
         const value = Cookies.get('id'); // returns 'value' if the cookie exists
-        console.log(value)
-        if ( (value !== undefined) || ( location.pathname === "/" || location.pathname ==="/login" ) ){
-
+        console.log()
+        if ( (value !== undefined) || ( location.pathname.substring(0, 9) !== "/coreview")){
             navigate(location.pathname)
             setLoading(false)
         } else {
-            console.log( "ghere")
             navigate("/login")
             setLoading(false)
         }
@@ -61,9 +68,13 @@ function AppRouter(){
         <Root classname={"text-white"} >
             { !disabledNav && <Navbar /> }
             <Routes>
-                <Route path={"/"} element={ <Home/> }/>
-                <Route path={"/about"} element={ <Home/> }/>
-                <Route path={"/product"} element={ <Home/> }/>
+                <Route path={"/"} element={ <Home/> }>
+                    <Route path={"/about"} element={ <About/> }/>
+                    <Route path={"/product"} element={ <Product/> }/>
+                    <Route path={"/pricing"} element={ <Pricing/> }/>
+                    <Route path={"/docs"} element={ <Docs/> }/>
+                </Route>
+
                 <Route path={"/login"} element={ <Login/> }/>
                 <Route path={"/coreview"} element={ <Index/> }>
                     <Route path={"c"} element={<ClientView/>}/>
