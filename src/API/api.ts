@@ -16,7 +16,7 @@ const GET = async <type>( route:string, params:Record<string, string> ) =>{
 
     const queryParams = new URLSearchParams(params);
 
-    const url = `http://localhost:8080${route}?${queryParams}`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
     console.log(cookie.jwt)
     await fetch(url, {
         method: 'GET',
@@ -54,7 +54,7 @@ const POST = async <type> ( route:string, params:Record<string, string>, data:Bo
     const cookie = JSON.parse( Cookies.get("id") || "{}")
 
 
-    const url = `http://localhost:8080${route}?${queryParams}`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
 
     console.log(url)
 
@@ -102,7 +102,7 @@ const DELETE = async <type> ( route:string, params:Record<string, string>, data:
 
     const queryParams = new URLSearchParams(params)
 
-    const url = `http://localhost:8080${route}?${queryParams}`;
+    const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
 
     await fetch(url, {
         method: 'DELETE',
