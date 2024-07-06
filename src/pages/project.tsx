@@ -1,6 +1,10 @@
-import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import {ReactNode, useLayoutEffect, useState} from "react";
 import { IoIosArrowBack } from "react-icons/io";
+import CVlogo from "../assets/CVllogo.png"
+import { RiHomeFill } from "react-icons/ri";
+import { RiMessage2Fill } from "react-icons/ri";
+import { FaBox } from "react-icons/fa";
 
 
 type propsOptionBarStyle = { action: ()=>void, optionalStyle?:string}
@@ -28,56 +32,70 @@ export function OptionsbarButtonStyle( {action, optionalStyle}:propsOptionBarSty
     )
 }
 
+
+type TabButtomProps = { title:string, to:string, icon:ReactNode}
+function TabButton({title, to, icon}:TabButtomProps){
+
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const [buttonActive, setButtonActive] = useState(false)
+
+    useLayoutEffect(() => {
+
+        console.log(location.pathname)
+        console.log(to)
+        if(location.pathname === to){
+            setButtonActive(true)
+        } else{
+            setButtonActive(false)
+        }
+
+    }, [navigate]);
+    return(
+        <button className={`flex flex-row  grid content-center  gap-2`} onMouseUp={()=>navigate(to)}>
+            <div className={` ${ buttonActive ? ("bg-[#2B2B2B] "): ("bg-[#212121] text-[#7F7E7E]")} p-2  rounded flex flex-row `}>
+                {icon}
+                <p className={"text-sm"}>{title}</p>
+            </div>
+        </button>
+    )
+}
+
 export default function Project(){
 
     const navigate = useNavigate()
 
     return(
-        <div className={"flex flex-col w-full pt-12 "}>
-            <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row"}>
-                <OptionsbarButtonStyle action={()=>navigate("/coreview/projects")}/>
-                <div className={" flex flex-row grid content-center"}>
-                    <p className={" font-medium ml-2"} >Projects </p>
-                </div>
-            </div>
-            <div className={"pb-20 grid grid-cols-2 gap-3  p-5"}>
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm    rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Media</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
+        <div className={"flex flex-col w-full pt-12 grid "}>
+            <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row justify-between"}>
+                <div className={"flex flex-row "}>
+                    <div className={"flex flex-row"}>
+                        <OptionsbarButtonStyle action={()=>navigate("/coreview/projects")}/>
+                        <div className={"w-[2px] bg-[#2B2B2B]"}/>
+                    </div>
+
+                    {/*<div className={" flex flex-row grid content-center mr-10"}>*/}
+                    {/*    <p className={" font-medium ml-2"} >Projects </p>*/}
+                    {/*</div>*/}
+                    <div className={"flex flex-row gap-2 pl-2"}>
+                        <TabButton title={"Home"} to={"/coreview/projects/open"} icon={<RiHomeFill className={"pt-1 mr-1"}/>}/>
+                        <TabButton title={"Files"} to={"/coreview/projects/open/files"} icon={<FaBox className={"pt-1 mr-1"}/>}/>
                     </div>
                 </div>
 
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm  rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Messages</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
+                <div className={"flex flex-row"}>
+                    <div className={"flex flex-row gap-2 pr-2"}>
+                        <TabButton title={"Messages"} to={"/coreview/projects/open/messages"} icon={<RiMessage2Fill className={"pt-1 mr-1"}/>}/>
                     </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Finance</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Content</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
-                    <p className={"py-1 pl-2"}>People</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
+                    <div className={"w-[2px] bg-[#2B2B2B]"}/>
+                    <div className={" flex flex-row grid content-center mx-1"}>
+                        <img className={"h-10"} src={CVlogo}/>
                     </div>
                 </div>
 
             </div>
-
+            <Outlet/>
         </div>
     )
 }

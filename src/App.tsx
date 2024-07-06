@@ -20,6 +20,7 @@ import Pricing from "./pages/pricing.tsx";
 import Docs from "./pages/docs.tsx";
 import Product from "./pages/product.tsx";
 import About from "./pages/about.tsx";
+import ProjectRoot from "./pages/projectRoot.tsx";
 
 
 
@@ -38,7 +39,7 @@ function AppRouter(){
             || location.pathname ==="/pricing"
             || location.pathname ==="/docs"
             || location.pathname ==="/product" ||
-            location.pathname ==="/coreview/projects/open"||
+            location.pathname.substring(0,23) ==="/coreview/projects/open"||
             location.pathname ==="/coreview/c")
         {
             setDisabledNav(true)
@@ -85,7 +86,11 @@ function AppRouter(){
                     </Route>
                     <Route path={"projects"} element={ <Projects/> }>
                         <Route path={"add"} element={ <AddProject/> }/>
-                        <Route path={"open"} element={ <Project/> }/>
+                        <Route path={"open"} element={ <Project/> }>
+                            <Route path={""} element={ <ProjectRoot/> }/>
+                            <Route path={"messages"} element={ <Index/> }/>
+                            <Route path={"files"} element={ <Index/> }/>
+                        </Route>
                     </Route>
                     <Route path={"templates"} element={ <Index/> }/>
 
