@@ -40,7 +40,12 @@ export default function ClientView(){
     return(
         <div className={"flex flex-col w-full pt-12 grid "}>
             <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row justify-between"}>
+
                 <div className={"flex flex-row "}>
+                    <div className={"flex flex-row w-12 justify-end"}>
+                        <div className={"w-[2px] bg-[#2B2B2B]"}/>
+                    </div>
+
                     <div className={"flex flex-row gap-2 pl-2"}>
                         <TabButton title={"Home"} to={"/coreview/c"} icon={<RiHomeFill className={"pt-1 mr-1"}/>}/>
                         <TabButton title={"Files"} to={"/coreview/c/files"} icon={<FaBox className={"pt-1 mr-1"}/>}/>

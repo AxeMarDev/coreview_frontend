@@ -40,7 +40,7 @@ function AppRouter(){
             || location.pathname ==="/docs"
             || location.pathname ==="/product" ||
             location.pathname.substring(0,23) ==="/coreview/projects/open"||
-            location.pathname.substring(0,11) ==="/coreview/c")
+            (location.pathname.substring(0,11) === "/coreview/c" && ( (location.pathname.length === 11) || (location.pathname[12] === "/") )) )
         {
             setDisabledNav(true)
         } else{
