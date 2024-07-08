@@ -40,7 +40,7 @@ function AppRouter(){
             || location.pathname ==="/docs"
             || location.pathname ==="/product" ||
             location.pathname.substring(0,23) ==="/coreview/projects/open"||
-            location.pathname ==="/coreview/c")
+            location.pathname.substring(0,11) ==="/coreview/c")
         {
             setDisabledNav(true)
         } else{
@@ -78,7 +78,11 @@ function AppRouter(){
 
                 <Route path={"/login"} element={ <Login/> }/>
                 <Route path={"/coreview"} element={ <Index/> }>
-                    <Route path={"c"} element={<ClientView/>}/>
+                    <Route path={"c"} element={<ClientView/>}>
+                        <Route path={""} element={ <p> home </p> }/>
+                        <Route path={"files"} element={ <p> files </p> }/>
+                        <Route path={"messages"} element={ <p> messages </p> }/>
+                    </Route>
                     <Route path={""} element={ <Index/> }/>
                     <Route path={"clients"} element={ <Clients/> }>
                         <Route path={"add"} element={ <AddClient/> }/>
