@@ -10,7 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "@johnn-e/react-mesh-gradient": "^1.1.1",
+    "@mui/material": "^5.16.0",
     "@tanstack/react-query": "^5.40.1",
     "@tanstack/react-query-devtools": "^5.45.1",
     "js-cookie": "^3.0.5",

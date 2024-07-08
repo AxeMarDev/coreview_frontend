@@ -5,6 +5,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import { useLayoutEffect, useState} from "react";
 import { Outlet, useLocation, useNavigate} from "react-router-dom";
 import {selectedClients} from "../assets/ReactQueryStore.ts";
+import {CircularProgress} from "@mui/material";
 
 
 
@@ -125,13 +126,17 @@ export default function Clients(){
 
                 <OptionsBar/>
 
-                { clientsQuery.data && (
+                { clientsQuery.data ? (
                     <Table<tClient> cols={[
                         {name:"id", width: "w-10"},
                         {name:"company_id", width: "w-32"},
                         {name:"name",width: "w-32"},
                         {name:"email",width: "w-56"}
                     ]} content={clientsQuery.data.resp } queryKey={"selectclients"} selectedArray={ selectedClients }/>
+                ):(
+                    <div className={"w-full h-full flex justify-center grid content-center"}>
+                        <CircularProgress />
+                    </div>
                 )}
 
             </div>

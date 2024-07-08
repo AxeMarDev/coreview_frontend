@@ -7,6 +7,7 @@ import {useLayoutEffect, useState} from "react";
 import { selectedProjects} from "../assets/ReactQueryStore.ts";
 import {OptionsbarButtonStyle} from "./clients.tsx";
 import { IoIosSearch } from "react-icons/io";
+import {CircularProgress} from "@mui/material";
 
 
 
@@ -140,12 +141,16 @@ export default function Projects(){
 
                 <OptionsBar/>
 
-                { projectsQuery.data && (
+                { projectsQuery.data ? (
                     <Table cols={[
                         {name:"id", width: "w-10"},
                         {name:"name",width: "w-32"},
                         {name:"company_id",width: "w-32"}
                     ]} content={projectsQuery.data.resp} queryKey={"selectedProjects"} selectedArray={selectedProjects}/>
+                ):(
+                    <div className={"w-full h-full flex justify-center grid content-center"}>
+                        <CircularProgress />
+                    </div>
                 )}
 
             </div>
