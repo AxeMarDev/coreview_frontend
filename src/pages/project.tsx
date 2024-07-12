@@ -5,6 +5,9 @@ import CVlogo from "../assets/CVllogo.png"
 import { RiHomeFill } from "react-icons/ri";
 import { RiMessage2Fill } from "react-icons/ri";
 import { FaBox } from "react-icons/fa";
+import {useQuery} from "@tanstack/react-query";
+import API from "../API/api.ts";
+import {CircularProgress} from "@mui/material";
 
 
 type propsOptionBarStyle = { action: ()=>void, optionalStyle?:string}
@@ -66,36 +69,58 @@ export default function Project(){
 
     const navigate = useNavigate()
 
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const id = queryParams.get('id') || "undef";
+
+    const project = useQuery({
+        queryKey: ["project"],
+        queryFn: ()=>API.getProject( id)
+    })
+
     return(
-        <div className={"flex flex-col w-full pt-12 grid "}>
-            <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row justify-between"}>
-                <div className={"flex flex-row "}>
-                    <div className={"flex flex-row"}>
-                        <OptionsbarButtonStyle action={()=>navigate("/coreview/projects")}/>
-                        <div className={"w-[2px] bg-[#2B2B2B]"}/>
-                    </div>
+        <>
+            { project.data && (
+                <div className={"flex flex-col w-full pt-12 grid "}>
+                    <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row justify-between"}>
+                        <div className={"flex flex-row "}>
+                            <div className={"flex flex-row"}>
+                                <OptionsbarButtonStyle action={()=>navigate("/coreview/projects")}/>
+                                <div className={"w-[2px] bg-[#2B2B2B]"}/>
+                            </div>
 
-                    {/*<div className={" flex flex-row grid content-center mr-10"}>*/}
-                    {/*    <p className={" font-medium ml-2"} >Projects </p>*/}
-                    {/*</div>*/}
-                    <div className={"flex flex-row gap-2 pl-2"}>
-                        <TabButton title={"Home"} to={"/coreview/projects/open"} icon={<RiHomeFill className={"pt-1 mr-1"}/>}/>
-                        <TabButton title={"Files"} to={"/coreview/projects/open/files"} icon={<FaBox className={"pt-1 mr-1"}/>}/>
+                            {/*<div className={" flex flex-row grid content-center mr-10"}>*/}
+                            {/*    <p className={" font-medium ml-2"} >Projects </p>*/}
+                            {/*</div>*/}
+                            <div className={"flex flex-row gap-2 pl-2"}>
+                                <TabButton title={"Home"} to={`/coreview/projects/open?id=${id}`} icon={<RiHomeFill className={"pt-1 mr-1"}/>}/>
+                                <TabButton title={"Files"} to={`/coreview/projects/open/files?id=${id}`} icon={<FaBox className={"pt-1 mr-1"}/>}/>
+                            </div>
+                        </div>
+
+                        <div className={"flex flex-row"}>
+                            <div className={"flex flex-row gap-2 pr-2"}>
+                                <TabButton title={"Messages"} to={`/coreview/projects/open/messages?id=${id}`} icon={<RiMessage2Fill className={"pt-1 mr-1"}/>}/>
+                            </div>
+                            <div className={"w-[2px] bg-[#2B2B2B]"}/>
+                            <div className={" flex flex-row grid content-center mx-1"}>
+                                <img className={"h-10"} src={CVlogo}/>
+                            </div>
+                        </div>
+
                     </div>
+                    <Outlet/>
                 </div>
-
-                <div className={"flex flex-row"}>
-                    <div className={"flex flex-row gap-2 pr-2"}>
-                        <TabButton title={"Messages"} to={"/coreview/projects/open/messages"} icon={<RiMessage2Fill className={"pt-1 mr-1"}/>}/>
-                    </div>
-                    <div className={"w-[2px] bg-[#2B2B2B]"}/>
-                    <div className={" flex flex-row grid content-center mx-1"}>
-                        <img className={"h-10"} src={CVlogo}/>
-                    </div>
+            )}
+            { project.isLoading && (
+                <div className={"bg-[#171717] w-screen h-screen flex justify-center grid content-center"}>
+                    <CircularProgress />
                 </div>
+            )}
+        </>
 
-            </div>
-            <Outlet/>
-        </div>
+
+
+
     )
 }

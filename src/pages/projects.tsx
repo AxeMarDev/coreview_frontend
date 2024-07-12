@@ -59,6 +59,17 @@ function OptionsBar(){
         },
     })
 
+    const clearProjectMutation = useMutation({
+        mutationFn: () => {
+            return new Promise<void>((resolve) => {
+                resolve();
+            });
+        },
+        onSuccess: ()=> {
+            QueryClient.removeQueries({queryKey:["project"]})
+        },
+    })
+
     const [ field, setField ] = useState("")
 
     return(
@@ -68,9 +79,12 @@ function OptionsBar(){
                 <div className={"flex flex-row content-center  gap-1 rounded"}>
                     { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/projects/add")}/>)}
                     { selectClientsQuery.data.length !== projectsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(projectsQuery.data && projectsQuery.data.resp || [])}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/projects/add")}/> )}
+                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/projects/delete")}/> )}
                     { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
-                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"open"} action={()=>navigate("/coreview/projects/open")}/> )}
+                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"open"} action={()=> {
+                        clearProjectMutation.mutate()
+                        navigate(`/coreview/projects/open?id=${selectClientsQuery.data}`)
+                    }}/> )}
                 </div>
                 <div className={"h-full flex flex-row"}>
                     <input className={"bg-[#F7F7F7] border-y border-l border-[#E5E5E5] rounded-l text-black text-sm pl-2"} type={"text"} value={field} onChange={(e)=>setField(e.target.value)} placeholder={"search"}/>

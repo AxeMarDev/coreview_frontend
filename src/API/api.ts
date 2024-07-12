@@ -124,6 +124,37 @@ const DELETE = async <type> ( route:string, params:Record<string, string>, data:
 
     return value
 }
+
+const PUT = async <type> ( route:string, params:Record<string, string>, data:BodyInit) =>{
+
+    const cookie = JSON.parse( Cookies.get("id") || "")
+    let value : { resp : type } = {resp:<type>[]}
+
+    const queryParams = new URLSearchParams(params)
+
+    const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
+
+    await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${cookie.jwt}`  // Add this line
+        },
+        body: data
+    })
+        .then((response)=> response.json() )
+        .then((data) => {
+            console.log(data)
+            value = { resp: data }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+    return value
+}
+
 //
 // const PATCH = async ( route:string, params:Record<string, string>, data:BodyInit) =>{
 //
@@ -194,32 +225,64 @@ const  employeelogin = async (param:tLogin) =>{
 }
 
 const getClients = async()=>{
-    return GET<tClient[]> ("/client", {})
+    return GET<tClient[]> ("/a/client", {})
 }
 
 const addClient = async(param:tClient)=>{
-    return POST<tClient>("/client",{}, JSON.stringify(param), )
+    return POST<tClient>("/a/client",{}, JSON.stringify(param), )
 }
 
 const getProjects = async()=>{
-    return GET<tProject[]> ("/project", {})
+    return GET<tProject[]> ("/a/project", {})
 }
 
 const addProjects = async(param:tProject)=>{
-    return POST<tProject>("/project",{}, JSON.stringify(param))
+    return POST<tProject>("/a/project",{}, JSON.stringify(param))
 }
 
 const deleteClient = async( param:{id:string}) =>{
-    return DELETE( "/client", param, "")
+    return DELETE( "/a/client", param, "")
 }
 
+const deleteProject = async( param:{id:string}) =>{
+    return DELETE( "/a/project", param, "")
+}
+
+
+const deleteEmployeeFromProject = async( projectId:string, clientId:string ) =>{
+    return DELETE( `/a/project/${projectId}/employee/${clientId}`,{},"")
+}
+
+
 const getEmployees = async() =>{
-    return GET<tEmployee[]>( "/employees", {} )
+    return GET<tEmployee[]>( "/a/employees", {} )
 }
 
 const addEmployee = async(param:tEmployee)=>{
-    return POST<tEmployee>("/employees",{}, JSON.stringify(param))
+    return POST<tEmployee>("/a/employees",{}, JSON.stringify(param))
 }
+
+const getProject = async( projectId:string ) =>{
+    return GET<tProject>(`/a/project/${projectId}`,{})
+}
+
+const putClientToProject = async (projectId:string, clientId:string)=>{
+    return PUT( `/a/project/${projectId}/client/${clientId}`,{},"")
+}
+
+const getProjectClients = async( projectId:string ) =>{
+    return GET<tClient[]>(`/a/project/${projectId}/client`,{})
+}
+
+const putEmployeeToProject = async (projectId:string, employeeId:string)=>{
+    return PUT( `/a/project/${projectId}/employee/${employeeId}`,{},"")
+}
+
+const getProjectEmployees = async( projectId:string ) =>{
+    return GET<tEmployee[]>(`/a/project/${projectId}/employee`,{})
+}
+
+
 
 export {register,getClients, addClient, getProjects}
 
@@ -258,6 +321,10 @@ export default class API{
         return deleteClient(param)
     }
 
+    static deleteProject(param:{id:string}){
+        return deleteProject(param)
+    }
+
     static getEmployees(){
         return getEmployees()
     }
@@ -265,4 +332,28 @@ export default class API{
         return addEmployee(param)
     }
 
+    static getProject( projectId :string){
+        return getProject(projectId)
+    }
+
+    static putClientToProject( projectId:string, clientId:string){
+        return putClientToProject(projectId,clientId)
+    }
+
+    static getProjectClients( projectId :string) {
+        return getProjectClients(projectId)
+    }
+
+    static putEmployeeToProject( projectId:string, employeeId:string){
+        return putEmployeeToProject(projectId,employeeId)
+    }
+
+    static deleteEmployeeFromProject( projectId:string, employeeId:string){
+        return deleteEmployeeFromProject(projectId,employeeId)
+    }
+
+    static getProjectEmployees( projectId :string) {
+        return getProjectEmployees(projectId)
+    }
 }
+

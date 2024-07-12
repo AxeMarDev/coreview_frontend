@@ -21,6 +21,7 @@ import Docs from "./pages/docs.tsx";
 import Product from "./pages/product.tsx";
 import About from "./pages/about.tsx";
 import ProjectRoot from "./pages/projectRoot.tsx";
+import DeleteProjects from "./pages/deleteProjects.tsx";
 
 
 
@@ -51,9 +52,9 @@ function AppRouter(){
 
     useEffect(() => {
         const value = Cookies.get('id'); // returns 'value' if the cookie exists
-        console.log()
+        console.log( location )
         if ( (value !== undefined) || ( location.pathname.substring(0, 9) !== "/coreview")){
-            navigate(location.pathname)
+            navigate(location)
             setLoading(false)
         } else {
             navigate("/login")
@@ -78,7 +79,7 @@ function AppRouter(){
 
                 <Route path={"/login"} element={ <Login/> }/>
                 <Route path={"/coreview"} element={ <Index/> }>
-                    <Route path={"c"} element={<ClientView/>}>
+                    <Route path={"c"} element={<ClientView />}>
                         <Route path={""} element={ <p> home </p> }/>
                         <Route path={"files"} element={ <p> files </p> }/>
                         <Route path={"messages"} element={ <p> messages </p> }/>
@@ -90,6 +91,7 @@ function AppRouter(){
                     </Route>
                     <Route path={"projects"} element={ <Projects/> }>
                         <Route path={"add"} element={ <AddProject/> }/>
+                        <Route path={"delete"} element={ <DeleteProjects/> }/>
                         <Route path={"open"} element={ <Project/> }>
                             <Route path={""} element={ <ProjectRoot/> }/>
                             <Route path={"messages"} element={ <Index/> }/>
