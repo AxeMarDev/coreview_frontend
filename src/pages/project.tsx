@@ -78,9 +78,21 @@ export default function Project(){
         queryFn: ()=>API.getProject( id)
     })
 
+    const projectClients = useQuery({
+        queryKey: ["projectclients"],
+        queryFn: ()=>API.getProjectClients(id)
+    })
+
+
+    const projectEmployee = useQuery({
+        queryKey: ["projectemployees"],
+        queryFn: ()=>API.getProjectEmployees(id)
+    })
+
+
     return(
         <>
-            { project.data && (
+            { (project.data && projectClients.data && projectEmployee.data  )&& (
                 <div className={"flex flex-col w-full pt-12 grid "}>
                     <div className={"flex w-full h-12 bg-[#171717] fixed top-0 text-white flex flex-row justify-between"}>
                         <div className={"flex flex-row "}>

@@ -155,53 +155,37 @@ const PUT = async <type> ( route:string, params:Record<string, string>, data:Bod
     return value
 }
 
-//
-// const PATCH = async ( route:string, params:Record<string, string>, data:BodyInit) =>{
-//
-//     let value : { resp : tProjects } = {resp: []}
-//
-//     const queryParams = new URLSearchParams(params)
-//
-//     const url = `http://localhost:8080${route}?${queryParams}`;
-//
-//     await fetch(url, {
-//         method: 'PATCH',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: data
-//     })
-//         .then((response)=> response.json() )
-//         .then((data) => {
-//             console.log(data)
-//             value = { resp: data }
-//         })
-//         .catch((error) => {
-//             console.error(error);
-//         });
-//
-//
-//     return value
-// }
 
-// const deleteProject = async (id:string) =>{
-//     return DELETE( "/projects",{id: id}, "")
-// }
-// const   getProjects = async (params:{id:string}) =>{
-//
-//     return GET<tProjects>( "/projects",params)
-//
-// }
-//
-// const   addProjects = async (param:tProject) =>{
-//
-//     return POST( "/projects",{}, JSON.stringify(param))
-//
-// }
-//
-// const updateProject = async( param:tProject) =>{
-//     return PATCH("/projects", {id:param.id}, JSON.stringify(param))
-// }
+const PATCH = async <type> ( route:string, params:Record<string, string>, data:BodyInit) =>{
+
+    const cookie = JSON.parse( Cookies.get("id") || "")
+    let value : { resp : type } = {resp:<type>[]}
+
+    const queryParams = new URLSearchParams(params)
+
+    const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
+
+    await fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${cookie.jwt}`  // Add this line
+        },
+        body: data
+    })
+        .then((response)=> response.json() )
+        .then((data) => {
+            console.log(data)
+            value = { resp: data }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+
+
+    return value
+}
+
 
 
 export type tRegister = { company_name:string, company_code:string, email:string, username:string, phone:string, password:string}
@@ -249,10 +233,13 @@ const deleteProject = async( param:{id:string}) =>{
 }
 
 
-const deleteEmployeeFromProject = async( projectId:string, clientId:string ) =>{
-    return DELETE( `/a/project/${projectId}/employee/${clientId}`,{},"")
+const deleteEmployeeFromProject = async( projectId:string, employeeId:string ) =>{
+    return DELETE( `/a/project/${projectId}/employee/${employeeId}`,{},"")
 }
 
+const deleteClientFromProject = async( projectId:string, clientId:string ) =>{
+    return DELETE( `/a/project/${projectId}/client/${clientId}`,{},"")
+}
 
 const getEmployees = async() =>{
     return GET<tEmployee[]>( "/a/employees", {} )
@@ -281,6 +268,11 @@ const putEmployeeToProject = async (projectId:string, employeeId:string)=>{
 const getProjectEmployees = async( projectId:string ) =>{
     return GET<tEmployee[]>(`/a/project/${projectId}/employee`,{})
 }
+
+const updateProjectName = async( projectId:string, newName:string ) =>{
+    return PATCH(`/a/project/${projectId}/name`,{},JSON.stringify({"newName":newName}))
+}
+
 
 
 
@@ -352,8 +344,17 @@ export default class API{
         return deleteEmployeeFromProject(projectId,employeeId)
     }
 
+    static deleteClientFromProject( projectId:string, clientId:string){
+        return deleteClientFromProject(projectId,clientId)
+    }
+
+
     static getProjectEmployees( projectId :string) {
         return getProjectEmployees(projectId)
+    }
+
+    static updateProjectName(projectId :string, newName:string){
+        return updateProjectName(projectId, newName)
     }
 }
 

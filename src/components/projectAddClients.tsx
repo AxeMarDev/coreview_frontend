@@ -55,7 +55,7 @@ export default function ProjectAddClients({setInModal}:propsProjectAddClients){
                         await API.putClientToProject(id, clientId);
                         console.log(`Completed: ${clientId}`);
                     })
-                );
+                )
             }
         },
         onSuccess: () => {
