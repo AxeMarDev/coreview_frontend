@@ -253,6 +253,11 @@ const getProject = async( projectId:string ) =>{
     return GET<tProject>(`/a/project/${projectId}`,{})
 }
 
+const getClient = async( clientId:string ) =>{
+    return GET<tClient>(`/a/client/${clientId}`,{})
+}
+
+
 const putClientToProject = async (projectId:string, clientId:string)=>{
     return PUT( `/a/project/${projectId}/client/${clientId}`,{},"")
 }
@@ -355,6 +360,10 @@ export default class API{
 
     static updateProjectName(projectId :string, newName:string){
         return updateProjectName(projectId, newName)
+    }
+
+    static getClient(clientId :string){
+        return getClient(clientId)
     }
 }
 

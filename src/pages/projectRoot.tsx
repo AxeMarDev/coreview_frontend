@@ -29,7 +29,6 @@ export default function ProjectRoot(){
                 </div>
             )}
 
-            <p className={"text-black"}>{ project.data.resp.name } </p>
             <ProjectHeader setLoadingTagDelete={setLoadingTagDelete} setModalNode={setModalNode} setInModal={setInModal} loadingTagDelete={loadingTagDelete}/>
             <div className={"pb-20 grid grid-cols-2 gap-3 "}>
                 <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm    rounded-lg "}>

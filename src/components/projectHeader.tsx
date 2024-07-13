@@ -41,8 +41,6 @@ export default function ProjectHeader({loadingTagDelete,setLoadingTagDelete,setI
         queryFn: ()=>API.getProjectEmployees(id).finally(()=>setLoadingTagDelete(false))
     })
 
-
-
     const deleteEmployeeFromProject = useMutation({
         mutationFn: (employeeId:string) => API.deleteEmployeeFromProject(id,employeeId),
         onSuccess: () => {
@@ -67,7 +65,7 @@ export default function ProjectHeader({loadingTagDelete,setLoadingTagDelete,setI
 
     return(
         <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
-            <p className={"py-1 pl-2"}>People</p>
+            <p className={"py-1 pl-2"}>Overview</p>
             <div className={"h-1"}>
                 { loadingTagDelete && <LinearProgress />}
             </div>
@@ -77,8 +75,6 @@ export default function ProjectHeader({loadingTagDelete,setLoadingTagDelete,setI
                     {project.data && <HeaderField field={project.data.resp.id} fieldName={"Project Id"}/> }
                     {project.data && <HeaderField field={`${project.data.resp.company_id}`} fieldName={"Company Id"}/> }
 
-                    {project.data && <p>project id: {" "+project.data.resp.id}</p>}
-                    {project.data && <p>company id: {" "+project.data.resp.company_id}</p>}
                 </div>
                 { projectClients.data && (
                     <div>

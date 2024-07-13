@@ -6,6 +6,7 @@ import { useLayoutEffect, useState} from "react";
 import { Outlet, useLocation, useNavigate} from "react-router-dom";
 import {selectedClients} from "../assets/ReactQueryStore.ts";
 import {CircularProgress} from "@mui/material";
+import ClientModal from "../components/clientModal.tsx";
 
 
 
@@ -79,16 +80,21 @@ export function OptionsBar(){
             QueryClient.resetQueries({queryKey:["selectclients"]})
         },
     })
-
+    const [ inModal , setInModal ] = useState(false)
     return(
 
         selectClientsQuery.data && (
             <div className={" flex flex-row content-center py-1 gap-1 rounded "}>
-                    { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
-                    { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
-                    { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
-                    { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>{}}/> )}
+                { inModal && (
+                    <div className={" flex justify-end  p-5 fixed top-0 left-0 z-50  w-screen h-screen bg-black/70 "}>
+                       <ClientModal setModal={setInModal}/>
+                    </div>
+                )}
+                { selectClientsQuery.data.length === 0 && ( <OptionsbarButtonStyle title={"add"} action={ ()=>navigate("/coreview/clients/add")}/>)}
+                { selectClientsQuery.data.length !== clientsQuery.data?.resp.length && ( <OptionsbarButtonStyle title={"select all"} action={()=>selectAllMutation.mutate(clientsQuery.data && clientsQuery.data.resp || [])}/> )}
+                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"delete"} action={()=>navigate("/coreview/clients/delete")}/> )}
+                { selectClientsQuery.data.length !== 0 && ( <OptionsbarButtonStyle title={"deselect"} action={()=>deselectAllMutation.mutate()}/> )}
+                { selectClientsQuery.data.length === 1 && ( <OptionsbarButtonStyle title={"edit"} action={()=>setInModal(true)}/> )}
             </div>
         )
     )
@@ -112,6 +118,7 @@ export default function Clients(){
     }, [location,navigate]);
 
 
+
     const clientsQuery = useQuery({
         queryKey: ["clients"],
         queryFn: API.getClients
@@ -122,6 +129,7 @@ export default function Clients(){
             <Outlet/>
         ):(
             <div className={"w-full h-full flex flex-col "}>
+
                 <Title > Clients </Title>
 
                 <OptionsBar/>
