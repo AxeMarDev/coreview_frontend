@@ -9,7 +9,7 @@ export default function HeaderField({field,fieldName, updateable,action}:propsHe
     const [updatedField, setUpdatedField]  = useState(field)
 
     return(
-        <div className={"flex flex-row"}>
+        <div className={"flex flex-row text-[#616161] text-sm"}>
             <p className={"pr-3"}>{fieldName}:</p>
 
             { over ? (

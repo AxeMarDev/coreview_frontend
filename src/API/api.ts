@@ -190,16 +190,21 @@ const PATCH = async <type> ( route:string, params:Record<string, string>, data:B
 
 export type tRegister = { company_name:string, company_code:string, email:string, username:string, phone:string, password:string}
 export type tLogin = {  company_code:string,  username:string, password:string}
+export type tLoginAdmin = { username:string, hash_password:string}
+
 export type tClient = { id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
 export type tProject ={ id:string, name:string , company_id:number}
 export type tEmployee = {id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
-
+export type tAdmin = {id?:string, name:string, username:string, email:string, hash_password:string}
+export type tBlog = {id?:string, title:string, subtitle:string, author_id:number, date_posted:number}
 
 const  register = async (param:tRegister) =>{
-    console.log(JSON.stringify(param))
-    return POST<{id:string, company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true} )
+    return POST<{id:string, type:"regular", company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"",type:"regular", company_name:"", jwt:"", error: true} )
 }
 
+const  adminRegister = async (params:tAdmin) =>{
+    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>( "/admin-register",{}, JSON.stringify(params), {id:"",type:"admin", company_name:"", jwt:"", error: true} )
+}
 
 const  clientlogin = async (param:tLogin) =>{
     return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/client-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
@@ -208,12 +213,20 @@ const  employeelogin = async (param:tLogin) =>{
     return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/employee-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
 }
 
+const adminlogin = async (param:tLoginAdmin)=>{
+    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>("/admin-auth", {}, JSON.stringify(param), {id:"", type:"admin", company_name:"", jwt:"", error: true})
+}
+
 const getClients = async()=>{
     return GET<tClient[]> ("/a/client", {})
 }
 
 const addClient = async(param:tClient)=>{
     return POST<tClient>("/a/client",{}, JSON.stringify(param), )
+}
+
+const addBlog = async(param:tBlog)=>{
+    return POST("/blog",{}, JSON.stringify(param), )
 }
 
 const getProjects = async()=>{
@@ -232,6 +245,9 @@ const deleteProject = async( param:{id:string}) =>{
     return DELETE( "/a/project", param, "")
 }
 
+const deleteBlog = async( id:string) =>{
+    return DELETE( `/blog/${id}`, {}, "")
+}
 
 const deleteEmployeeFromProject = async( projectId:string, employeeId:string ) =>{
     return DELETE( `/a/project/${projectId}/employee/${employeeId}`,{},"")
@@ -251,6 +267,10 @@ const addEmployee = async(param:tEmployee)=>{
 
 const getProject = async( projectId:string ) =>{
     return GET<tProject>(`/a/project/${projectId}`,{})
+}
+
+const getBlogs = async(  ) =>{
+    return GET<tBlog[]>(`/blog`,{})
 }
 
 const getClient = async( clientId:string ) =>{
@@ -296,6 +316,10 @@ export default class API{
 
     static clientlogin(param:tLogin){
         return clientlogin(param)
+    }
+
+    static adminlogin(param:tLoginAdmin){
+        return adminlogin(param)
     }
 
 
@@ -365,5 +389,22 @@ export default class API{
     static getClient(clientId :string){
         return getClient(clientId)
     }
+
+    static adminRegister (params:tAdmin){
+        return adminRegister(params)
+    }
+
+    static getBlogs (){
+        return getBlogs()
+    }
+
+    static addBlog(param:tBlog){
+        return addBlog(param)
+    }
+
+    static deleteBlog(id:string){
+        return deleteBlog(id)
+    }
 }
+
 

@@ -3,6 +3,7 @@ import railiamntLogo from "../assets/railiantlogowh.png"
 import { MeshGradientRenderer } from '@johnn-e/react-mesh-gradient';
 import { FaArrowDown } from "react-icons/fa";
 import {useEffect, useLayoutEffect, useState} from "react";
+import Footer from "../components/footer.tsx";
 
 export function Navbar(){
 
@@ -68,25 +69,24 @@ export default function Home(){
                 ]}
             />
             { (location.pathname === "/") ? (
-                <div className={"h-full flex  flex-row p-20"}>
-
-
-                    <div className={"flex flex-col grid content-center justify-center w-full px-14 "}>
-                        <div className={"flex justify-center text-center   mb-28 flex-col"}>
-                            <p className={"text-5xl font-black"}>{messages[index]}</p>
-                            <div className={" flex justify-center mt-12  h-12"}>
-                                <FaArrowDown className={"h-10 w-10"} />
+                    <div className={"flex  flex-col"}>
+                        <div className={" h-screen flex  flex-row p-20"}>
+                            <div className={"flex flex-col grid content-center justify-center w-full px-14 "}>
+                                <div className={"flex justify-center text-center   mb-28 flex-col"}>
+                                    <p className={"text-5xl font-black"}>{messages[index]}</p>
+                                    <div className={" flex justify-center mt-12  h-12"}>
+                                        <FaArrowDown className={"h-10 w-10"} />
+                                    </div>
+                                </div>
+                                {/*<img src={consoless} className={"rounded shadow-lg"}/>*/}
                             </div>
-
                         </div>
 
-
-                        {/*<img src={consoless} className={"rounded shadow-lg"}/>*/}
                     </div>
-                </div>
             ) :(
                 <Outlet/>
             )}
+            <Footer/>
 
         </div>
     )

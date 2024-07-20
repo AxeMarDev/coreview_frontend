@@ -127,6 +127,9 @@ export default function Project(){
             { project.isLoading && (
                 <div className={"bg-[#171717] w-screen h-screen flex justify-center grid content-center"}>
                     <CircularProgress />
+                    <p>{`${projectClients.data === undefined}`}</p>
+                    <p>{`${project.data === undefined}`}</p>
+                    <p>{`${projectEmployee.data === undefined}`}</p>
                 </div>
             )}
         </>

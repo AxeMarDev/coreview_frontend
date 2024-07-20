@@ -22,6 +22,9 @@ import Product from "./pages/product.tsx";
 import About from "./pages/about.tsx";
 import ProjectRoot from "./pages/projectRoot.tsx";
 import DeleteProjects from "./pages/deleteProjects.tsx";
+import RailiantRoot from "./pages/railiantRoot.tsx";
+import RailiantAdminDashboard from "./pages/railiantAdminDashboard.tsx";
+import AddBlog from "./pages/addBlog.tsx";
 
 
 
@@ -40,7 +43,8 @@ function AppRouter(){
             || location.pathname ==="/pricing"
             || location.pathname ==="/docs"
             || location.pathname ==="/product" ||
-            location.pathname.substring(0,23) ==="/coreview/projects/open"||
+            (location.pathname.substring(0,9) === "/internal" && ( (location.pathname.length === 9) || (location.pathname[9] === "/") )) ||
+            location.pathname.substring(0,23) === "/coreview/projects/open"||
             (location.pathname.substring(0,11) === "/coreview/c" && ( (location.pathname.length === 11) || (location.pathname[11] === "/") )) )
         {
             setDisabledNav(true)
@@ -51,6 +55,8 @@ function AppRouter(){
     }, [location, navigate]);
 
     useEffect(() => {
+
+
         const value = Cookies.get('id'); // returns 'value' if the cookie exists
         console.log( location )
         if ( (value !== undefined) || ( location.pathname.substring(0, 9) !== "/coreview")){
@@ -60,7 +66,6 @@ function AppRouter(){
             navigate("/login")
             setLoading(false)
         }
-
     }, [navigate]);
 
     return(
@@ -75,6 +80,11 @@ function AppRouter(){
                     <Route path={"/product"} element={ <Product/> }/>
                     <Route path={"/pricing"} element={ <Pricing/> }/>
                     <Route path={"/docs"} element={ <Docs/> }/>
+                </Route>
+
+                <Route path={"/internal"} element={<RailiantRoot/>}>
+                    <Route path={""} element={ <RailiantAdminDashboard/> }/>
+                    <Route path={"add"} element={ <AddBlog/> }/>
                 </Route>
 
                 <Route path={"/login"} element={ <Login/> }/>
