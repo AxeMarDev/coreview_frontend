@@ -12,19 +12,24 @@ const GET = async <type>( route:string, params:Record<string, string> ) =>{
 
     let value : { resp : type } = {resp: <type>[]}
 
-    const cookie = JSON.parse( Cookies.get("id") || "")
+    const cookie = JSON.parse( Cookies.get("id") || "{}")
 
     const queryParams = new URLSearchParams(params);
 
     const url = `${import.meta.env.VITE_BACKEND_URL}${route}?${queryParams}`;
     console.log(cookie.jwt)
-    await fetch(url, {
+    await fetch(url, ( cookie === "" ? {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }: {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${cookie.jwt}`  // Add this line
         },
-    })
+    }))
         .then((response)=> response.json() )
         .then((data) => {
             if ( data.error){
