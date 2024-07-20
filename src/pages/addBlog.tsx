@@ -9,7 +9,7 @@ export default function AddBlog() {
     const QueryClient = useQueryClient()
     const navigate = useNavigate()
     const [fields, setFields] = useState<tBlog>(
-        { title:"", subtitle:"", author_id: 0, date_posted:0}
+        { title:"", subtitle:"", author_id: 0, date_posted:0, imageurl:""}
     )
 
     const blogMutation = useMutation({
@@ -24,6 +24,8 @@ export default function AddBlog() {
         <div className={"flex flex-col text-black"}>
             <input type={"text"} value={fields.title} onChange={(e)=>setFields({...fields, title:e.target.value})}/>
             <input type={"text"} value={fields.subtitle} onChange={(e)=>setFields({...fields, subtitle:e.target.value})}/>
+            <input type={"text"} value={fields.imageurl} onChange={(e)=>setFields({...fields, imageurl:e.target.value})}/>
+
             <button onClick={()=>blogMutation.mutate(fields)}> add </button>
         </div>
     )

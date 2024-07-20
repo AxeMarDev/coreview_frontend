@@ -196,7 +196,7 @@ export type tClient = { id:string, name:string, username:string, email:string, h
 export type tProject ={ id:string, name:string , company_id:number}
 export type tEmployee = {id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
 export type tAdmin = {id?:string, name:string, username:string, email:string, hash_password:string}
-export type tBlog = {id?:string, title:string, subtitle:string, author_id:number, date_posted:number}
+export type tBlog = {id?:string, title:string, subtitle:string, author_id:number, date_posted:number, imageurl:string}
 
 const  register = async (param:tRegister) =>{
     return POST<{id:string, type:"regular", company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"",type:"regular", company_name:"", jwt:"", error: true} )
