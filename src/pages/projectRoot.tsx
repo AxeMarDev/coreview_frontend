@@ -1,8 +1,8 @@
 import {useQuery} from "@tanstack/react-query";
 import API from "../API/api.ts";
-import {useLocation} from "react-router-dom";
 import {ReactNode, useState} from "react"
 import ProjectHeader from "../components/projectHeader.tsx";
+import {useLocation} from "react-router-dom";
 
 
 export default function ProjectRoot(){
@@ -16,6 +16,9 @@ export default function ProjectRoot(){
         queryKey: ["project"],
         queryFn: ()=>API.getProject( id),
     })
+
+
+
     const [ inModal , setInModal ] = useState(false)
     const [ loadingTagDelete , setLoadingTagDelete] = useState(false)
 
@@ -54,7 +57,7 @@ export default function ProjectRoot(){
 
                 <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
                     <p className={"py-1 pl-2"}>Content</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
+                    <div className={"bg-white h-64 rounded-b-lg text-black"}>
                         <p className={"text-black p-1 "}> #content# </p>
                     </div>
                 </div>

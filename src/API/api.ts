@@ -51,7 +51,7 @@ const GET = async <type>( route:string, params:Record<string, string> ) =>{
     return value
 }
 
-const POST = async <type> ( route:string, params:Record<string, string>, data:BodyInit, defaultReturn?:type ) =>{
+const POST = async <type> ( route:string, params:Record<string, string>, data:BodyInit | FormData, defaultReturn?:type ) =>{
 
     let value : { resp : type } = {resp: defaultReturn || <type>[]}
 
@@ -202,6 +202,7 @@ export type tProject ={ id:string, name:string , company_id:number}
 export type tEmployee = {id:string, name:string, username:string, email:string, hash_password:string, phone:string, company_id:number}
 export type tAdmin = {id?:string, name:string, username:string, email:string, hash_password:string}
 export type tBlog = {id?:string, title:string, subtitle:string, author_id:number, date_posted:number, imageurl:string}
+export type tFile = {image_id?:string, project_id?:string, file_name:string, mime_type:string, size?:string }
 
 const  register = async (param:tRegister) =>{
     return POST<{id:string, type:"regular", company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"",type:"regular", company_name:"", jwt:"", error: true} )
@@ -240,6 +241,18 @@ const getProjects = async()=>{
 
 const addProjects = async(param:tProject)=>{
     return POST<tProject>("/a/project",{}, JSON.stringify(param))
+}
+
+const addFile = async( params:tFile ,file:string, projectId:string)=>{
+    return POST<tFile>(`/a/project/${projectId}/files`,{}, JSON.stringify({...params, file:file}))
+}
+
+const getFiles = async( projectId:string)=>{
+    return GET<tFile[]>(`/a/project/${projectId}/files`,{} )
+}
+
+const getFile = async( projectId:string, fileId:string, param:{mime_type:string})=>{
+    return GET<{file:string}>(`/a/project/${projectId}/files/${fileId}`,param )
 }
 
 const deleteClient = async( param:{id:string}) =>{
@@ -409,6 +422,18 @@ export default class API{
 
     static deleteBlog(id:string){
         return deleteBlog(id)
+    }
+
+    static addFile(params:tFile, file:string,projectId:string){
+        return addFile( params, file, projectId)
+    }
+
+    static getFiles( projectId:string){
+        return getFiles( projectId)
+    }
+
+    static getFile( projectId:string, fileId:string, param:{mime_type:string}){
+        return getFile(projectId,fileId, param )
     }
 }
 

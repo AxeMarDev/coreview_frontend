@@ -25,6 +25,7 @@ import DeleteProjects from "./pages/deleteProjects.tsx";
 import RailiantRoot from "./pages/railiantRoot.tsx";
 import RailiantAdminDashboard from "./pages/railiantAdminDashboard.tsx";
 import AddBlog from "./pages/addBlog.tsx";
+import {ProjectFiles} from "./pages/ProjectFiles.tsx";
 
 
 
@@ -105,7 +106,7 @@ function AppRouter(){
                         <Route path={"open"} element={ <Project/> }>
                             <Route path={""} element={ <ProjectRoot/> }/>
                             <Route path={"messages"} element={ <Index/> }/>
-                            <Route path={"files"} element={ <Index/> }/>
+                            <Route path={"files"} element={ <ProjectFiles/> }/>
                         </Route>
                     </Route>
                     <Route path={"templates"} element={ <Index/> }/>
