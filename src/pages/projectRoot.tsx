@@ -3,6 +3,7 @@ import API from "../API/api.ts";
 import {ReactNode, useState} from "react"
 import ProjectHeader from "../components/projectHeader.tsx";
 import {useLocation} from "react-router-dom";
+import GnattChart from "../components/gnattChart.tsx";
 
 
 export default function ProjectRoot(){
@@ -33,35 +34,7 @@ export default function ProjectRoot(){
             )}
 
             <ProjectHeader setLoadingTagDelete={setLoadingTagDelete} setModalNode={setModalNode} setInModal={setInModal} loadingTagDelete={loadingTagDelete}/>
-            <div className={"pb-20 grid grid-cols-2 gap-3 "}>
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm    rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Media</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm  rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Messages</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Finance</p>
-                    <div className={"bg-white h-64 rounded-b-lg"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-
-                <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
-                    <p className={"py-1 pl-2"}>Content</p>
-                    <div className={"bg-white h-64 rounded-b-lg text-black"}>
-                        <p className={"text-black p-1 "}> #content# </p>
-                    </div>
-                </div>
-            </div>
+            <GnattChart/>
         </div>
 
     )

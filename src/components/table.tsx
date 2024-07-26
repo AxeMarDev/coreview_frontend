@@ -67,8 +67,8 @@ function Rows({rowContent, cols, queryKey, selectedArray}:propsRow ){
     })
 
     return(
-        <div onMouseOver={()=>hoverBackground[1]("#F7F7F7")} onMouseLeave={()=>hoverBackground[1]("")} className={"flex flex-row bg-white border-b border-b-[#E3E3E3]"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])} style={
-            {backgroundColor: ((selectClientsQuery.data && selectClientsQuery.data.includes(rowContent["id"]) ? ("#F1F1F1") : (hoverBackground[0]) ))}
+        <div className={"flex hover:bg-[#F7F7F7] flex-row bg-white border-b border-b-[#E3E3E3]"} onClick={()=>selectedClientsMutation.mutate(rowContent["id"])}
+             style={{backgroundColor: ((selectClientsQuery.data && selectClientsQuery.data.includes(rowContent["id"]) ? ("#F1F1F1") : (hoverBackground[0]) ))}
         }>
             {cols.map((colName) => <RowTab title={colName}/> )}
         </div>

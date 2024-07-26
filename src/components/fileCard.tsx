@@ -4,6 +4,7 @@ import {useLocation} from "react-router-dom";
 import {useQuery} from "@tanstack/react-query";
 import {HiDotsHorizontal} from "react-icons/hi";
 import Viewer from 'react-viewer';
+import { LinearProgress} from "@mui/material";
 
 
 type pFileCard = { file:tFile}
@@ -37,13 +38,17 @@ export default function FileCard({file}:pFileCard){
         <div className={"flex flex-col border  border-[#E5E5E5] rounded w-full"} ref={divRef}>
             <div className={`bg-white flex`} style={{
                 height: width ,
+                width: width,
                 backgroundImage: `url('data:image/jpeg;base64,${image.data && image.data.resp.file}')`,  // how to put image var that is in base64
                 backgroundSize: "cover"
             }} ref={divRef}>
-                <div className={"w-full flex  justify-end"}>
-                    <div className={"px-2 h-6 border grid content-center hover:bg-[#E5E5E5] border-[#E5E5E5] rounded relative top-3 right-2 bg-[#F1F1F1] drop-shadow"}>
-                        <HiDotsHorizontal className={"border-[#E5E5E5] w-5"} />
+                <div className={"flex flex-col justify-between w-full h-full "}>
+                    <div className={"w-full flex  justify-end"}>
+                        <div className={"px-2 h-6 border grid content-center hover:bg-[#E5E5E5] border-[#E5E5E5] rounded relative top-3 right-2 bg-[#F1F1F1] drop-shadow"}>
+                            <HiDotsHorizontal className={"border-[#E5E5E5] w-5"} />
+                        </div>
                     </div>
+                    <div>{image.isLoading && <LinearProgress />}</div>
                 </div>
 
             </div>

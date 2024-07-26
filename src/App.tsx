@@ -1,5 +1,5 @@
 import './App.css'
-import {BrowserRouter, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {BrowserRouter, Outlet, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {useEffect, useLayoutEffect, useState} from "react";
 import Root from "./components/root.tsx";
 import Navbar from "./components/navbar.tsx";
@@ -26,6 +26,7 @@ import RailiantRoot from "./pages/railiantRoot.tsx";
 import RailiantAdminDashboard from "./pages/railiantAdminDashboard.tsx";
 import AddBlog from "./pages/addBlog.tsx";
 import {ProjectFiles} from "./pages/ProjectFiles.tsx";
+import Documentation from "./pages/documentation.tsx";
 
 
 
@@ -43,7 +44,8 @@ function AppRouter(){
             || location.pathname ==="/about"
             || location.pathname ==="/pricing"
             || location.pathname ==="/docs"
-            || location.pathname ==="/product" ||
+            || location.pathname ==="/product"
+            || location.pathname ==="/documentation"||
             (location.pathname.substring(0,9) === "/internal" && ( (location.pathname.length === 9) || (location.pathname[9] === "/") )) ||
             location.pathname.substring(0,23) === "/coreview/projects/open"||
             (location.pathname.substring(0,11) === "/coreview/c" && ( (location.pathname.length === 11) || (location.pathname[11] === "/") )) )
@@ -83,9 +85,14 @@ function AppRouter(){
                     <Route path={"/docs"} element={ <Docs/> }/>
                 </Route>
 
+                <Route path={"/documentation"} element={ <Documentation/> }/>
+
                 <Route path={"/internal"} element={<RailiantRoot/>}>
-                    <Route path={""} element={ <RailiantAdminDashboard/> }/>
+                    <Route path={""} element={ <Outlet/>  }/>
                     <Route path={"add"} element={ <AddBlog/> }/>
+
+                    <Route path={"documentation"} element={ <p>blog</p> }/>
+                    <Route path={"blogs"} element={ <RailiantAdminDashboard/> }/>
                 </Route>
 
                 <Route path={"/login"} element={ <Login/> }/>

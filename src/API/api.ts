@@ -1,11 +1,7 @@
 import Cookies from "js-cookie";
 
-
-
-export type tMessage = {id:string, email:string, name:string, location:string, message:string,read:boolean, company_id:string}
-export type tMessages = [tMessage] | []
-export type tCompany = {id:string, company_name:string}
-
+const rVersion:string = "/web/v1"
+const rAdmin:string = rVersion + "/a"
 
 const GET = async <type>( route:string, params:Record<string, string> ) =>{
 
@@ -205,30 +201,30 @@ export type tBlog = {id?:string, title:string, subtitle:string, author_id:number
 export type tFile = {image_id?:string, project_id?:string, file_name:string, mime_type:string, size?:string }
 
 const  register = async (param:tRegister) =>{
-    return POST<{id:string, type:"regular", company_name:string, jwt:string, error:boolean}>( "/register",{}, JSON.stringify(param), {id:"",type:"regular", company_name:"", jwt:"", error: true} )
+    return POST<{id:string, type:"regular", company_name:string, jwt:string, error:boolean}>( rVersion+"/register",{}, JSON.stringify(param), {id:"",type:"regular", company_name:"", jwt:"", error: true} )
 }
 
 const  adminRegister = async (params:tAdmin) =>{
-    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>( "/admin-register",{}, JSON.stringify(params), {id:"",type:"admin", company_name:"", jwt:"", error: true} )
+    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>( rVersion+"/admin-register",{}, JSON.stringify(params), {id:"",type:"admin", company_name:"", jwt:"", error: true} )
 }
 
 const  clientlogin = async (param:tLogin) =>{
-    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/client-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
+    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( rVersion+"/client-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
 }
 const  employeelogin = async (param:tLogin) =>{
-    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( "/employee-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
+    return POST<{id:string, company_name:string, jwt:string, error:boolean }>( rVersion+"/employee-auth",{}, JSON.stringify(param), {id:"", company_name:"", jwt:"", error: true})
 }
 
 const adminlogin = async (param:tLoginAdmin)=>{
-    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>("/admin-auth", {}, JSON.stringify(param), {id:"", type:"admin", company_name:"", jwt:"", error: true})
+    return POST<{id:string, type:"admin", company_name:string, jwt:string, error:boolean}>(rVersion+"/admin-auth", {}, JSON.stringify(param), {id:"", type:"admin", company_name:"", jwt:"", error: true})
 }
 
 const getClients = async()=>{
-    return GET<tClient[]> ("/a/client", {})
+    return GET<tClient[]> (rAdmin+"/client", {})
 }
 
 const addClient = async(param:tClient)=>{
-    return POST<tClient>("/a/client",{}, JSON.stringify(param), )
+    return POST<tClient>(rAdmin+"/client",{}, JSON.stringify(param), )
 }
 
 const addBlog = async(param:tBlog)=>{
@@ -236,84 +232,84 @@ const addBlog = async(param:tBlog)=>{
 }
 
 const getProjects = async()=>{
-    return GET<tProject[]> ("/a/project", {})
+    return GET<tProject[]> (rAdmin+"/project", {})
 }
 
 const addProjects = async(param:tProject)=>{
-    return POST<tProject>("/a/project",{}, JSON.stringify(param))
+    return POST<tProject>(rAdmin+"/project",{}, JSON.stringify(param))
 }
 
 const addFile = async( params:tFile ,file:string, projectId:string)=>{
-    return POST<tFile>(`/a/project/${projectId}/files`,{}, JSON.stringify({...params, file:file}))
+    return POST<tFile>(rAdmin+`/project/${projectId}/files`,{}, JSON.stringify({...params, file:file}))
 }
 
 const getFiles = async( projectId:string)=>{
-    return GET<tFile[]>(`/a/project/${projectId}/files`,{} )
+    return GET<tFile[]>(rAdmin+`/project/${projectId}/files`,{} )
 }
 
 const getFile = async( projectId:string, fileId:string, param:{mime_type:string})=>{
-    return GET<{file:string}>(`/a/project/${projectId}/files/${fileId}`,param )
+    return GET<{file:string}>(rAdmin+`/project/${projectId}/files/${fileId}`,param )
 }
 
 const deleteClient = async( param:{id:string}) =>{
-    return DELETE( "/a/client", param, "")
+    return DELETE( rAdmin+"/client", param, "")
 }
 
 const deleteProject = async( param:{id:string}) =>{
-    return DELETE( "/a/project", param, "")
+    return DELETE( rAdmin+"/project", param, "")
 }
 
 const deleteBlog = async( id:string) =>{
-    return DELETE( `/blog/${id}`, {}, "")
+    return DELETE( rVersion+`/blog/${id}`, {}, "")
 }
 
 const deleteEmployeeFromProject = async( projectId:string, employeeId:string ) =>{
-    return DELETE( `/a/project/${projectId}/employee/${employeeId}`,{},"")
+    return DELETE( rAdmin+`/project/${projectId}/employee/${employeeId}`,{},"")
 }
 
 const deleteClientFromProject = async( projectId:string, clientId:string ) =>{
-    return DELETE( `/a/project/${projectId}/client/${clientId}`,{},"")
+    return DELETE( rAdmin+`/project/${projectId}/client/${clientId}`,{},"")
 }
 
 const getEmployees = async() =>{
-    return GET<tEmployee[]>( "/a/employees", {} )
+    return GET<tEmployee[]>( rAdmin+"/employees", {} )
 }
 
 const addEmployee = async(param:tEmployee)=>{
-    return POST<tEmployee>("/a/employees",{}, JSON.stringify(param))
+    return POST<tEmployee>(rAdmin+"/employees",{}, JSON.stringify(param))
 }
 
 const getProject = async( projectId:string ) =>{
-    return GET<tProject>(`/a/project/${projectId}`,{})
+    return GET<tProject>(rAdmin+`/project/${projectId}`,{})
 }
 
 const getBlogs = async(  ) =>{
-    return GET<tBlog[]>(`/blog`,{})
+    return GET<tBlog[]>(rVersion+`/blog`,{})
 }
 
 const getClient = async( clientId:string ) =>{
-    return GET<tClient>(`/a/client/${clientId}`,{})
+    return GET<tClient>(rAdmin+`/client/${clientId}`,{})
 }
 
 
 const putClientToProject = async (projectId:string, clientId:string)=>{
-    return PUT( `/a/project/${projectId}/client/${clientId}`,{},"")
+    return PUT( rAdmin+`/project/${projectId}/client/${clientId}`,{},"")
 }
 
 const getProjectClients = async( projectId:string ) =>{
-    return GET<tClient[]>(`/a/project/${projectId}/client`,{})
+    return GET<tClient[]>(rAdmin+`/project/${projectId}/client`,{})
 }
 
 const putEmployeeToProject = async (projectId:string, employeeId:string)=>{
-    return PUT( `/a/project/${projectId}/employee/${employeeId}`,{},"")
+    return PUT( rAdmin+`/project/${projectId}/employee/${employeeId}`,{},"")
 }
 
 const getProjectEmployees = async( projectId:string ) =>{
-    return GET<tEmployee[]>(`/a/project/${projectId}/employee`,{})
+    return GET<tEmployee[]>(rAdmin+`/project/${projectId}/employee`,{})
 }
 
 const updateProjectName = async( projectId:string, newName:string ) =>{
-    return PATCH(`/a/project/${projectId}/name`,{},JSON.stringify({"newName":newName}))
+    return PATCH(rAdmin + `/project/${projectId}/name`,{},JSON.stringify({"newName":newName}))
 }
 
 

@@ -65,7 +65,17 @@ export default function ProjectHeader({loadingTagDelete,setLoadingTagDelete,setI
 
     return(
         <div className={ "border border-[#E5E5E5]  text-[#616161] text-sm   rounded-lg "}>
-            <p className={"py-1 pl-2"}>Overview</p>
+            <div className={"flex justify-between"}>
+                <p className={"py-1 pl-2"}>Overview</p>
+
+                <div className={" grid content-end"}>
+                    <div className={"py-1 mr-2 bg-green-800 rounded h-6 grid content-center text-green-400 border border-green-400"}>
+                        <p className={"px-1"}>Connected</p>
+                    </div>
+                </div>
+
+            </div>
+
             <div className={"h-1"}>
                 { loadingTagDelete && <LinearProgress />}
             </div>

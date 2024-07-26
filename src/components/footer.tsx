@@ -28,7 +28,7 @@ export default function Footer(){
                     ]}/>
                     <ContentColumnFooter title={"Resources"} links={[
                         {title:"blog",url:"/about"},
-                        {title:"documentation",url:"/about"},
+                        {title:"documentation",url:"/documentation"},
                         {title:"pricing",url:"/about"}
                     ]}/>
                 </div>

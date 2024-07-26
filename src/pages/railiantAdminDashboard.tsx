@@ -2,7 +2,6 @@ import {useQuery} from "@tanstack/react-query";
 import API from "../API/api.ts";
 import {useNavigate} from "react-router-dom";
 import {RxCross2} from "react-icons/rx";
-import railiantLogo from "../assets/ci.png"
 import {useState} from "react";
 import {useMutation} from "@tanstack/react-query";
 import {useQueryClient} from "@tanstack/react-query";
@@ -47,11 +46,9 @@ export default function RailiantAdminDashboard(){
     })
 
     return(
-        <div className={"flex flex-row w-screen "}>
+        <div className={"flex flex-row w-screen h-full"}>
             <div className={"flex h-full w-72 bg-gray-900 flex-col p-2 gap-3"}>
-                <div className={"p-2 w-40"}>
-                    <img src={railiantLogo} />
-                </div>
+
 
                 {blogs.data && blogs.data.resp.map(( blog)=>
                     <BlogCard title={blog.title} subtitle={blog.subtitle} id={ Number(blog.id) }/>
